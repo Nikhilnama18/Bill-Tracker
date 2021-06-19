@@ -1,4 +1,4 @@
-import orgbillsRepository from '../../repositories/orgDetails/orgbillsrepository';
+import orgbillsRepository from '../../repositories/bills/orgbillsrepository';
 class orgbillsService {
     async getbills(org_id: string) {
         try {

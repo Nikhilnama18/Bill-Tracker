@@ -1,6 +1,6 @@
 import express from 'express';
 import userController from '../controllers/users/usercontroller';
-import orgbillsController from '../controllers/orgDetails/orgdetailscontroller';
+import orgbillsController from '../controllers/bills/orgdetailscontroller';
 const router = express.Router();
 
 router.use('/user', userController);

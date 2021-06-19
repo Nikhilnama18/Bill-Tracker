@@ -1,5 +1,5 @@
 import { Client } from 'pg';
-import { getbills_Q, findbill_Q, createbills_Q, findorg_Q, updatebill_Q, deletebill_Q } from '../../Queries/orgDetails/orgbillQuries';
+import { getbills_Q, findbill_Q, createbills_Q, findorg_Q, updatebill_Q, deletebill_Q } from '../../Queries/bills/orgbillQuries';
 const client = new Client({
     user: 'nick',
     host: 'localhost',

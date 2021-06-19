@@ -1,9 +1,9 @@
 import Router, { Request, Response, NextFunction } from 'express';
-import orgbillService from '../../services/orgDetails/orgbillsservice';
+import orgbillService from '../../services/bills/orgbillsservice';
 const router = Router();
 
 // Create Bill
-router.post('/createbills', async (req: Request, res: Response, next: NextFunction) => {
+router.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const billservice = new orgbillService();
         const findbill = await billservice.createbill(req.body.org_id, req.body.bill_id, req.body.bill_amt);
@@ -11,7 +11,7 @@ router.post('/createbills', async (req: Request, res: Response, next: NextFuncti
             res.status(201).json({
                 message: 'new bill created'
             })
-        }else {
+        } else {
             res.status(201).json({
                 message: 'Bill id already exists'
             })
@@ -23,10 +23,13 @@ router.post('/createbills', async (req: Request, res: Response, next: NextFuncti
     }
 })
 // Get All bills
-router.get('/:org_id', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/', async (req: Request, res: Response, next: NextFunction) => {
+    console.log("HIT in controller bills/ get ",req.params)
+    res.json(req.params)
     try {
         const billsservice = new orgbillService();
         const results = await billsservice.getbills(req.params.org_id);
+        console.log(`req.params.org_id : ${req.params.org_id}`)
         // Handle no bills and no orgnization
         if (results.rowCount > 0) {
             res.status(201).json({
@@ -46,7 +49,7 @@ router.get('/:org_id', async (req: Request, res: Response, next: NextFunction) =
 })
 
 // Update bill
-router.put('/update', async (req: Request, res: Response, next: NextFunction) => {
+router.put('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const billsservice = new orgbillService();
         const results = await billsservice.updatebill(req.body.org_id, req.body.bill_id, req.body.bill_amt)
@@ -67,10 +70,10 @@ router.put('/update', async (req: Request, res: Response, next: NextFunction) =>
 })
 
 // Delete Bill
-router.delete('/delete', async (req: Request, res: Response, next: NextFunction) => {
+router.delete('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const billsservice = new orgbillService();
-        const results = await billsservice.deletebill(req.body.org_id,req.body.bill_id);
+        const results = await billsservice.deletebill(req.body.org_id, req.body.bill_id);
         if (results.rowCount > 0) {
             res.status(201).json({
                 message: 'Bills is deleted',
