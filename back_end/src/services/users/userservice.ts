@@ -1,5 +1,6 @@
 import userRepositry from '../../repositories/user/userrepositry';
-
+import bcrypt from 'bcrypt';
+import e from 'express';
 class userService {
     // async getuserPassword(u_name: string) {
     //     try {
@@ -22,16 +23,10 @@ class userService {
             const userresults = await userrepo.findUser(u_name);
             if (userresults.rowCount > 0) {
                 const userpassword = await userrepo.getuserPassword(u_name);
-                const pass2 = userpassword.rows[0].u_password;
-                if (u_password == pass2) {
-                    return 1;
-                }
-                else {
-                    return 0;
-                }
+                return await bcrypt.compare(u_password, userpassword.rows[0].u_password);
             }
             else {
-                return 0;
+                return false;
             }
         }
         catch (e) {
@@ -44,7 +39,13 @@ class userService {
             const userrepo = new userRepositry();
             const userresults = await userrepo.findperson(u_name);
             if (userresults.rowCount == 0) {
-                return await userrepo.createUser(u_name, u_password);
+                bcrypt.hash(u_password, 10, async (err, hash) => {
+                    if (err) {
+                        throw (err);
+                    } else {
+                        return await userrepo.createUser(u_name, hash);
+                    }
+                })
             }
             else {
                 return userresults;

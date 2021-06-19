@@ -35,7 +35,7 @@ router.post('/login', async (req: Request, res: Response, next: NextFunction) =>
     try {
         let user_service = new userService();
         let result = await user_service.login(req.body.u_name, req.body.u_password);
-        if (result == 1) {
+        if (result == true) {
             res.status(201).json({
                 message: 'Auth Sucess'
             })

@@ -5,7 +5,9 @@ const router = express.Router();
 
 router.use('/user', userController);
 
-router.use('/org',);
+// router.use('/org',);
 
 router.use('/orgbills', orgbillsController);
+
+// /user/org/orgbills/
 export =router;
