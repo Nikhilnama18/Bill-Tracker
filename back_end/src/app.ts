@@ -1,8 +1,11 @@
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
+import * as dotenv from "dotenv";
 import routerIndex from './controllers/index';
 
 const app = express();
+// To load env.
+dotenv.config();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

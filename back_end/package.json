@@ -4,9 +4,12 @@
   "description": "Handles the back end of the project ",
   "main": "build/app.js",
   "scripts": {
-    "dev": "node build/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "nodemon": "nodemon build/app.js"
+    "build": "tsc",
+    "serve": "node -r dotenv/config build/app.js",
+    "watch": "tsc -w",
+    "dev": "nodemon -r dotenv/config build/app.js",
+    "tslint": "tslint -c tslint.json -p tsconfig.json",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Nick",
   "license": "ISC",
@@ -18,9 +21,16 @@
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "pg": "^8.6.0"
+    "lodash": "^4.17.21",
+    "pg": "^8.6.0",
+    "winston": "^3.3.3",
+    "winston-daily-rotate-file": "^4.5.5"
   },
   "devDependencies": {
-    "nodemon": "^2.0.7"
+    "@types/dotenv": "^8.2.0",
+    "@types/lodash": "^4.14.170",
+    "dotenv": "^10.0.0",
+    "nodemon": "^2.0.7",
+    "ts-node": "^10.0.0"
   }
 }
