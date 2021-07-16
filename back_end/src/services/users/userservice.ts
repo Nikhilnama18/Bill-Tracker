@@ -17,11 +17,13 @@ class userService {
     //         console.log(`Error occured in userservice while fetching password ${e}`);
     //     }
     // }
+
+    //done IUser
     async login(u_name: string, u_password: string) {
         try {
             const userrepo = new userRepositry();
             const userresults = await userrepo.findUser(u_name);
-            if (userresults.rowCount > 0) {
+            if (userresults.length > 0) {
                 const userpassword = await userrepo.getuserPassword(u_name);
                 return await bcrypt.compare(u_password, userpassword.rows[0].u_password);
             }
@@ -34,25 +36,21 @@ class userService {
             throw (e);
         }
     }
+    // done IUser
     async createuser(u_name: string, u_password: string) {
         try {
             const userrepo = new userRepositry();
             const userresults = await userrepo.findperson(u_name);
-            if (userresults.rowCount == 0) {
-                bcrypt.hash(u_password, 10, async (err, hash) => {
-                    if (err) {
-                        throw (err);
-                    } else {
-                        return await userrepo.createUser(u_name, hash);
-                    }
-                })
+            if (userresults.length == 0) {
+                const hash = await bcrypt.hash(u_password, 10)
+                return await userrepo.createUser(u_name, hash);
             }
             else {
                 return userresults;
             }
         }
         catch (e) {
-            console.log(`Error occured in userservice while creating new user ${e}`);
+            console.log(`Error : userservice: creating new user ${e}`);
             throw e
         }
     }
@@ -60,11 +58,13 @@ class userService {
         try {
             const userrepo = new userRepositry();
             const userresults = await userrepo.findUser(u_name);
-            if (userresults.rowCount == 0) {
-                return userresults;
+            if (userresults.length == 0) {
+                return 0;
             }
             else {
-                return await userrepo.updatePassword(u_name, new_password);
+                const hash = await bcrypt.hash(new_password, 10)
+                await userrepo.updatePassword(u_name, hash);
+                return 1;
             }
         }
         catch (e) {
@@ -75,10 +75,11 @@ class userService {
         try {
             const userrepo = new userRepositry();
             const result = await userrepo.findUser(u_name);
-            if (result.rowCount == 0)
+            if (result.length == 0)
                 return result;
             else {
-                return await userrepo.deleteuser(u_name);
+                await userrepo.deleteuser(u_name);
+                return 1;
             }
         }
         catch (e) {
@@ -86,11 +87,12 @@ class userService {
             throw (e);
         }
     }
+    // added
     async userdetails(u_name: string) {
         try {
             const userrepo = new userRepositry();
             let findUserResult = await userrepo.findUser(u_name)
-            if (findUserResult.rowCount == 0) {
+            if (findUserResult.length == 0) {
                 return findUserResult;
             }
             else {

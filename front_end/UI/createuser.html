@@ -24,6 +24,16 @@
             <input type="password" id="pwd2" placeholder="Re-Enter password"><br><br>
             <input type="button" id="createacc" value="Create Account"><br>
         </div>
+        <div id="msg">
+            <pre></pre>
+        </div>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script src="./UI.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                document.getElementById('createacc').addEventListener('click', createuser);
+            });
+        </script>
     </form>
 </body>
 
