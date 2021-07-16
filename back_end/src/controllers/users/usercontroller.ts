@@ -30,7 +30,7 @@ const router = Router();
 //         console.log(`Error occured in controller while geting details of password ${e}`);
 //     }
 // })
-
+// added IUser
 router.post('/login', async (req: Request, res: Response, next: NextFunction) => {
     try {
         let user_service = new userService();
@@ -51,15 +51,18 @@ router.post('/login', async (req: Request, res: Response, next: NextFunction) =>
         throw (e);
     }
 })
+
+//added IUser
 router.get('/:u_name', async (req: Request, res: Response, next: NextFunction) => {
     try {
         let user_service = new userService();
         let u_name = req.params.u_name;
         let result = await user_service.userdetails(u_name);
-        if (result.rowCount == 1) {
+        if (result.length == 1) {
             res.status(200).json({
                 message: "User details are",
-                data: result.rows
+                U_id: result[0].u_id,
+                User_Name: result[0].u_name,
             })
         }
         else {
@@ -74,11 +77,12 @@ router.get('/:u_name', async (req: Request, res: Response, next: NextFunction) =
     }
 })
 
+//added IUser
 router.post('/signup', async (req: Request, res: Response, next: NextFunction) => {
     try {
         let user_service = new userService();
         let result = await user_service.createuser(req.body.u_name, req.body.u_password);
-        if (result.rows.length == 1) {
+        if (result.length == 1) {
             res.status(200).json({
                 message: "User Already Exist",
             })
@@ -96,11 +100,12 @@ router.post('/signup', async (req: Request, res: Response, next: NextFunction) =
         })
     }
 })
+// added IUser
 router.put('/updatepassword', async (req: Request, res: Response, next: NextFunction) => {
     try {
         let user_service = new userService();
         let result = await user_service.updatepassword(req.body.u_name, req.body.u_password);
-        if (result.rowCount == 1) {
+        if (result == 1) {
             res.status(200).json({
                 message: 'User password updated',
             })
@@ -117,17 +122,19 @@ router.put('/updatepassword', async (req: Request, res: Response, next: NextFunc
     }
 });
 
+//added IUser
 router.delete('/deleteuser', async (req: Request, res: Response, next: NextFunction) => {
     try {
         let user_service = new userService();
         let result = await user_service.deletuser(req.body.u_name);
-        if (result.rowCount != 0) {
+        console.log(result);
+        if (result == 1) {
             res.status(200).json({
                 message: "user deleted",
             })
         }
         else {
-            res.status(300).json({
+            res.status(200).json({
                 message: "Auth Failed",
             })
         }

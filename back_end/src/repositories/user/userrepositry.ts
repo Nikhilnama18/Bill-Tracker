@@ -1,5 +1,6 @@
 import { Client } from 'pg';
 import { createuser_Q, upadatePassword_Q, findUser_Q, deleteuser_Q, getuserPassword_Q, getuserDeatils_Q, findperson_Q } from '../../Queries/users/userqueries';
+import { IUser } from '../../contracts/users/usercontracts';
 const client = new Client({
     user: 'nick',
     host: 'localhost',
@@ -15,37 +16,36 @@ class userRepositry {
             return await client.query(getuserPassword_Q, [u_name]);
         }
         catch (e) {
-            console.log(`Error occured while fetching userpassword in get request ${e}`);
+            console.log(`Error :Repo:getuserpassword ${e}`);
             throw (e)
         }
     }
-
-    async findUser(u_name: string) {
+    async findUser(u_name: string): Promise<IUser[]> {
         try {
-            return await client.query(findUser_Q, [u_name])
+            return (await client.query(findUser_Q, [u_name])).rows
         }
         catch (e) {
-            console.log(`Error occured while finding the user ${e}`);
+            console.log(`Error :Repo :findUser ${e}`);
             throw (e);
         }
 
     }
-    async findperson(u_name: string) {
+    async findperson(u_name: string): Promise<IUser[]> {
         try {
-            return await client.query(findperson_Q, [u_name])
+            return (await client.query(findperson_Q, [u_name])).rows
         }
         catch (e) {
-            console.log(`Error occured while finding the user ${e}`);
+            console.log(`Error:Repo:FindPerson ${e}`);
             throw (e)
         }
     }
 
-    async createUser(u_name: string, u_password: string) {
+    async createUser(u_name: string, u_password: string): Promise<IUser[]> {
         try {
-            return  await client.query(createuser_Q, [u_name, u_password]);
+            return (await client.query(createuser_Q, [u_name, u_password])).rows;
         }
         catch (e) {
-            console.log(`Error while creating a user ${e}`);
+            console.log(`Error :Repo :createuser ${e}`);
             throw e
         }
     }
@@ -54,12 +54,12 @@ class userRepositry {
             return await client.query(upadatePassword_Q, [u_name, new_password]);
         }
         catch (e) {
-            console.log(`Error occured while updating password ${e}`);
+            console.log(`Error :Rep : updating password ${e}`);
         }
     }
-    async deleteuser(u_name: string) {
+    async deleteuser(u_name: string): Promise<IUser[]> {
         try {
-            return await client.query(deleteuser_Q, [u_name]);
+            return (await client.query(deleteuser_Q, [u_name])).rows;
         }
         catch (e) {
             console.log(`Error : Repo : deleteuser ${e}`);
@@ -67,9 +67,9 @@ class userRepositry {
         }
     }
 
-    async userdetails(u_name: string) {
+    async userdetails(u_name: string): Promise<IUser[]> {
         try {
-            return await client.query(getuserDeatils_Q, [u_name]);
+            return (await client.query(getuserDeatils_Q, [u_name])).rows;
         }
         catch (e) {
             console.log(`Err:Repo:userdetails ${e}`);

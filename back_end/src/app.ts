@@ -17,7 +17,7 @@ app.use('/v1', routerIndex);
 
 try {
     app.listen(3001, "127.0.0.1", () => {
-        console.log(`Server runing at https://127.0.0.1:3001`);
+        console.log(`Server runing at http://127.0.0.1:3001`);
     })
 } 
 catch (e) {

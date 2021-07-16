@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Login</title>
+    <style>
+        .center {
+            text-align: center;
+            /* width: 1000px; */
+            /* position: absolute; */
+            border: 2px solid rgb(3, 3, 3);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div class="center">
+            <h1>{{title}}</h1>
+            <form @submit="createuser" method="post">
+                UserName
+                <br> <input type="text" id="u_name" v-model="u_name" placeholder="UserName"><br>
+                Password
+                <br><input type="password" id="u_password" v-model="u_password" placeholder="Password"><br><br> 
+                <button type="submit" id="signup">Signup</button>
+            </form>
+            <!-- <div class="Login">
+                <div class="details">
+                </div>
+            </div> -->
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="Vue_UI.js"></script>
+</body>
+
+</html>
