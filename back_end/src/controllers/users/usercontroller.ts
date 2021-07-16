@@ -127,7 +127,7 @@ router.delete('/deleteuser', async (req: Request, res: Response, next: NextFunct
             })
         }
         else {
-            res.status(200).json({
+            res.status(300).json({
                 message: "Auth Failed",
             })
         }

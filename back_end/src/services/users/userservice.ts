@@ -39,13 +39,8 @@ class userService {
             const userrepo = new userRepositry();
             const userresults = await userrepo.findperson(u_name);
             if (userresults.rowCount == 0) {
-                bcrypt.hash(u_password, 10, async (err, hash) => {
-                    if (err) {
-                        throw (err);
-                    } else {
-                        return await userrepo.createUser(u_name, hash);
-                    }
-                })
+                const hash = await bcrypt.hash(u_password, 10)
+                return await userrepo.createUser(u_name, hash);
             }
             else {
                 return userresults;

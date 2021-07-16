@@ -42,7 +42,7 @@ class userRepositry {
 
     async createUser(u_name: string, u_password: string) {
         try {
-            return await client.query(createuser_Q, [u_name, u_password]);
+            return  await client.query(createuser_Q, [u_name, u_password]);
         }
         catch (e) {
             console.log(`Error while creating a user ${e}`);
