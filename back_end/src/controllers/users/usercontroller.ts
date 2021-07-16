@@ -145,36 +145,30 @@ router.delete('/deleteuser', async (req: Request, res: Response, next: NextFunct
 
 // Org
 
-router.get('/:u_id/orgs/:o_id', async (req: Request, res: Response) => {
+// Fetch org info of a user.
+router.get('/:u_id/orgs/:o_id', asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   try {
     const orgSer = new organizationService();
     // TODO : Define new interface for non success states.
-    const org: IOrganization | { message: string } = await orgSer.getOrganizationById(req.params.u_id, req.params.o_id);
-    if (isOrganization(org)) {
-      res.status(200).json({
-        "status": "Success",
-        "data": org
-      });
+    const org: IOrganization[] = await orgSer.getOrganizationById(req.params.u_id, req.params.o_id);
+    if (org.length > 0 && isOrganization(org[0])) {
+      new SuccessResponse('success', org).send(res);
     }
     else {
-      res.status(200).json({
-        "status": "Failure",
-        "data": org
-      });
+      new NotFoundResponse('Requested organization not found. Please check and try again.').send(res);
     }
   } catch (error) {
-    console.log(`Error for ${req.url} @ ${req.method} :${error}`)
-    res.status(500).json({ "message": "Internal Server Error." });
+    // console.log(`Error for ${req.url} @ ${req.method} :${error}`)
+    throw error
   }
+}))
 
-})
-
-router.get('/:u_id/orgs', async (req: Request, res: Response) => {
+// Fetch all orgs of a user
+router.get('/:u_id/orgs', asyncHandler(async (req: Request, res: Response) => {
   try {
     const orgSer = new organizationService();
-    // TODO : Define new interface for non success states.
-    const org: IOrganization[] | { message: string }[] = await orgSer.getOrganizationByUserId(req.params.u_id);
-    if (isOrganization(org[0])) {
+    const org: IOrganization[] = await orgSer.getOrganizationByUserId(req.params.u_id);
+    if (org.length > 0 && isOrganization(org[0])) {
       new SuccessResponse('success', org).send(res);
     }
     else {
@@ -182,11 +176,11 @@ router.get('/:u_id/orgs', async (req: Request, res: Response) => {
     }
   } catch (error) {
     console.log(`Error for ${req.url} @ ${req.method} :${error}`)
-    res.status(500).json({ "message": "Internal Server Error." });
+    throw error
   }
+}))
 
-})
-
+// Add a new org for user.
 router.post('/:u_id/orgs', asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
   try {
     const orgSer = new organizationService();

@@ -55,4 +55,4 @@ class organizationRepositry {
 
 }
 
-export =organizationRepositry;
+export = organizationRepositry;
