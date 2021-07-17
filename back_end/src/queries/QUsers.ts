@@ -1,10 +1,10 @@
-export const getuserPassword_Q = `
+export const getUserById_Q = `
 SELECT
-	u_password
+	*
 FROM
 	userdetails
 WHERE
-	u_name = $1
+	u_id = $1
 AND 
     isdeleted = false`;
 

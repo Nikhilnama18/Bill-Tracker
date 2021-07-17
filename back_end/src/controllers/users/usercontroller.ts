@@ -1,12 +1,13 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { BadRequestResponse, NotFoundResponse, SuccessResponse } from '../../core/ApiResponse';
 import asyncHandler from '../../core/asyncHandler';
-import { ICreateOrganization, IOrganization, isOrganization } from '../../contracts/IOrganization';
+import { ICreateOrganization, IOrganization, isOrganization, IUpdateOrganization } from '../../contracts/IOrganization';
 import organizationService from '../../services/organizations/organizationsService';
 import { IUser } from '../../contracts/IUser';
 import userService from '../../services/users/usersService';
 import { IBill, ICreateBill } from '../../contracts/IBills';
 import billsService from '../../services/bills/billsService';
+import { BadRequestError } from '../../core/ApiError';
 
 const router = Router();
 
@@ -67,7 +68,7 @@ router.post('/signup', asyncHandler(async (req: Request, res: Response, next: Ne
 }))
 
 // updates user password in DB
-router.put('/updatepassword', asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+router.put('/:u_id', asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     try {
         let user_service = new userService();
         const result: IUser[] = await user_service.updatepassword(req.body.u_name, req.body.u_password);
@@ -85,7 +86,7 @@ router.put('/updatepassword', asyncHandler(async (req: Request, res: Response, n
 }));
 
 //Deletes a user in DB 
-router.delete('/deleteuser', asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+router.delete('/:u_id', asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     try {
         let user_service = new userService();
         const result: IUser[] = await user_service.deletuser(req.body.u_name);
@@ -160,6 +161,38 @@ router.post('/:u_id/orgs', asyncHandler(async (req: Request, res: Response, next
 
 }))
 
+router.put('/:u_id/orgs/:o_id', asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const orgSer = new organizationService();
+        const newOrg: IUpdateOrganization = {
+            u_id: req.params.u_id,
+            o_id: req.params.o_id,
+            o_name: req.body.o_name,
+            o_gst: req.body.o_gst,
+            o_location: req.body.o_location
+        }
+        const orgResult: IOrganization[] = await orgSer.updateOrganisation(newOrg);
+        new SuccessResponse('success', orgResult).send(res);
+    }
+    catch (error) {
+        throw (error);
+    }
+}))
+
+router.delete('/:u_id/orgs/:o_id', asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const orgSer = new organizationService();
+        const deletedOrg = await orgSer.deleteOrganisation(req.params.u_id, req.params.o_id)
+        console.log(deletedOrg.length);
+        if (deletedOrg.length > 0)
+            new SuccessResponse('success', deletedOrg).send(res);
+        else
+            throw new BadRequestError("Organization does not exists .Please check and try again.");
+    }
+    catch (error) {
+        throw error;
+    }
+}))
 // Bills
 
 // Add a new org for user.

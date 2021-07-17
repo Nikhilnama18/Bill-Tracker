@@ -1,7 +1,8 @@
 import { Client } from 'pg';
-import { createOrganization_Q, getOrganizationById_Q, getOrganizationByName_Q, getOrganizationByUserId_Q as getOrganizationsByUserId_Q } from '../../queries/QOrganizations';
-import { ICreateOrganization, IOrganization } from '../../contracts/IOrganization';
+import { createOrganization_Q, getOrganizationById_Q, updateOrganisation_Q, getOrganizationByName_Q, getOrganizationByUserId_Q as getOrganizationsByUserId_Q, deleteOrganization_Q } from '../../queries/QOrganizations';
+import { ICreateOrganization, IOrganization, IUpdateOrganization } from '../../contracts/IOrganization';
 import { db } from '../../config';
+import { cli } from 'winston/lib/winston/config';
 
 const client = new Client({
   user: db.user,
@@ -52,7 +53,14 @@ class organizationRepositry {
     org.o_gst, org.o_location, false, new Date(), null])).rows;
   }
 
+  async updateOrganization(org: IUpdateOrganization): Promise<IOrganization[]> {
+    return (await client.query(updateOrganisation_Q, [org.u_id, org.o_id,
+    org.o_name, org.o_gst, org.o_location])).rows;
+  }
 
+  async deleteOrganization(u_id: number, o_id: number): Promise<IOrganization[]> {
+    return (await client.query(deleteOrganization_Q, [u_id, o_id])).rows;
+  }
 }
 
 export = organizationRepositry;
