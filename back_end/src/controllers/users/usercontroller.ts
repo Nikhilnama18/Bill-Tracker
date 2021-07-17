@@ -4,6 +4,8 @@ import asyncHandler from '../../core/asyncHandler';
 import { ICreateOrganization, IOrganization, isOrganization } from '../../contracts/IOrganization';
 import organizationService from '../../services/organizations/organizationsService';
 import userService from '../../services/users/usersService';
+import { IBill, ICreateBill } from '../../contracts/IBills';
+import billsService from '../../services/bills/billsService';
 
 const router = Router();
 
@@ -208,4 +210,29 @@ router.post('/:u_id/orgs', asyncHandler(async (req: Request, res: Response, next
     }
 
 }))
+
+// Bills
+
+// Add a new org for user.
+router.post('/:u_id/orgs/:o_id/bills', asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const billService = new billsService();
+        // TODO : Need to add validators.
+        let newBill: ICreateBill = {
+            u_id: req.body.u_id,
+            o_id: req.body.o_id,
+            ammount: req.body.ammount,
+            due_ammount: req.body.due_ammount,
+            issue_timestamp: req.body.issue_timestamp
+        }
+        let createdBill: IBill[] = await billService.createbill(newBill);
+        new SuccessResponse('success', createdBill).send(res);
+
+    } catch (error) {
+        console.log(`Error for ${req.url} @ ${req.method} :${error}`);
+        throw error;
+    }
+
+}))
+
 export =router;

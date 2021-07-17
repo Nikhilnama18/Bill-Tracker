@@ -5,6 +5,7 @@ export interface IOrganization {
   o_gst?: string;
   o_location?: string;
   isdeleted: boolean;
+  // Application audit columns
   c_date?: Date;
   u_date?: Date;
 }

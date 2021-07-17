@@ -43,9 +43,9 @@ class organizationRepositry {
   }
 
   /**
-     * Returns all organizations corresponding to given user `u_id`
-     * @param {string} u_id User Id
-     * @returns {IOrganization} IOrganization
+     * Creates a new organization and returns it.
+     * @param {ICreateOrganization} org An organization
+     * @returns {IOrganization[]} IOrganization
      */
   async createOrganization(org: ICreateOrganization): Promise<IOrganization[]> {
     return (await client.query(createOrganization_Q, [org.u_id, org.o_name,
