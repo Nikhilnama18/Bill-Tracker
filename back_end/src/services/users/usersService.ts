@@ -1,4 +1,4 @@
-import userRepositry from '../../repositories/user/userrepositry';
+import userRepositry from '../../repositories/user/usersRepo';
 import bcrypt from 'bcrypt';
 import e from 'express';
 import { BadRequestResponse } from '../../core/ApiResponse';

@@ -1,5 +1,5 @@
 import { Client } from 'pg';
-import { createOrganization_Q, getOrganizationById_Q, getOrganizationByName_Q, getOrganizationByUserId_Q as getOrganizationsByUserId_Q } from '../../Queries/organizations/organizationqueries';
+import { createOrganization_Q, getOrganizationById_Q, getOrganizationByName_Q, getOrganizationByUserId_Q as getOrganizationsByUserId_Q } from '../../queries/QOrganizations';
 import { ICreateOrganization, IOrganization } from '../../contracts/IOrganization';
 import { db } from '../../config';
 
@@ -8,7 +8,7 @@ const client = new Client({
   host: db.host,
   database: db.database,
   password: db.password,
-  port: parseInt(db.port),
+  port: db.port,
 });
 client.connect();
 
@@ -43,9 +43,9 @@ class organizationRepositry {
   }
 
   /**
-     * Returns all organizations corresponding to given user `u_id`
-     * @param {string} u_id User Id
-     * @returns {IOrganization} IOrganization
+     * Creates a new organization and returns it.
+     * @param {ICreateOrganization} org An organization
+     * @returns {IOrganization[]} IOrganization
      */
   async createOrganization(org: ICreateOrganization): Promise<IOrganization[]> {
     return (await client.query(createOrganization_Q, [org.u_id, org.o_name,
