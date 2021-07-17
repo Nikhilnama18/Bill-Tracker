@@ -1,27 +1,28 @@
 import Router, { Request, Response, NextFunction } from 'express';
-import orgbillService from '../../services/bills/orgbillsservice';
+import orgbillService from '../../services/bills/billsService';
 const router = Router();
 
 // Create Bill
-router.post('/', async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const billservice = new orgbillService();
-        const findbill = await billservice.createbill(req.body.org_id, req.body.bill_id, req.body.bill_amt);
-        if (findbill.rowCount == 0) {
-            res.status(201).json({
-                message: 'new bill created'
-            })
-        } else {
-            res.status(201).json({
-                message: 'Bill id already exists'
-            })
-        }
-    }
-    catch (e) {
-        console.log(`Err : orgbill : Cont : createbill  ${e}`);
-        throw (e);
-    }
-})
+// router.post('/', async (req: Request, res: Response, next: NextFunction) => {
+//     try {
+//         // const billservice = new orgbillService();
+//         // const findbill = await billservice.createbill(req.body.org_id, req.body.bill_id, req.body.bill_amt);
+//         // if (findbill.rowCount == 0) {
+//         //     res.status(201).json({
+//         //         message: 'new bill created'
+//         //     })
+//         // } else {
+//         //     res.status(201).json({
+//         //         message: 'Bill id already exists'
+//         //     })
+//         // }
+//     }
+//     catch (e) {
+//         console.log(`Err : orgbill : Cont : createbill  ${e}`);
+//         throw (e);
+//     }
+// })
+
 // Get All bills
 router.get('/', async (req: Request, res: Response, next: NextFunction) => {
     console.log("HIT in controller bills/ get ",req.params)

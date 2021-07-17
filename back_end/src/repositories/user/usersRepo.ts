@@ -1,6 +1,6 @@
 import { Client } from 'pg';
-import { createuser_Q, upadatePassword_Q, findUser_Q, deleteuser_Q, getuserPassword_Q, getuserDeatils_Q, findperson_Q } from '../../Queries/users/userqueries';
-import { IUser } from '../../contracts/users/usercontracts';
+import { createuser_Q, upadatePassword_Q, findUser_Q, deleteuser_Q, getuserPassword_Q, getuserDeatils_Q, findperson_Q } from '../../Queries/QUsers';
+import { IUser } from '../../contracts/IUser';
 const client = new Client({
     user: 'nick',
     host: 'localhost',
