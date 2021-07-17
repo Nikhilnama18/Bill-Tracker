@@ -1,7 +1,7 @@
 import { Client } from 'pg';
 import { createOrganization_Q, getOrganizationByIdAndUserId_Q,
      getOrganizationByNameAndUserId_Q, getOrganizationsByUserId_Q,
-     getOrganizationById_Q } from '../../Queries/QOrganizations';
+     getOrganizationById_Q } from '../../queries/QOrganizations';
 import { ICreateOrganization, IOrganization } from '../../contracts/IOrganization';
 import { db } from '../../config';
 
@@ -10,7 +10,7 @@ const client = new Client({
   host: db.host,
   database: db.database,
   password: db.password,
-  port: parseInt(db.port),
+  port: db.port,
 });
 client.connect();
 
@@ -62,8 +62,6 @@ class organizationRepositry {
     return (await client.query(createOrganization_Q, [org.u_id, org.o_name,
     org.o_gst, org.o_location, false, new Date(), null])).rows;
   }
-
-
 }
 
 export = organizationRepositry;

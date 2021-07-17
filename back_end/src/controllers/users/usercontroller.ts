@@ -1,156 +1,105 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import { NotFoundResponse, SuccessResponse } from '../../core/ApiResponse';
+import { BadRequestResponse, NotFoundResponse, SuccessResponse } from '../../core/ApiResponse';
 import asyncHandler from '../../core/asyncHandler';
 import { ICreateOrganization, IOrganization, isOrganization } from '../../contracts/IOrganization';
 import organizationService from '../../services/organizations/organizationsService';
+import { IUser } from '../../contracts/IUser';
 import userService from '../../services/users/usersService';
 import { IBill, ICreateBill, isBill } from '../../contracts/IBills';
 import billsService from '../../services/bills/billsService';
 
 const router = Router();
 
-// router.get('/:u_name', async (req: Request, res: Response, next: NextFunction) => {
-//     try {
-//         console.log(`Hit at baseUrl: ${req.baseUrl} originalUrl: ${req.originalUrl} url:${req.url} @ ${req.method}`);
-//         const user_service = new userService();
-//         const result = await user_service.getuserPassword(req.body.u_name);
-//         // res.status(200).result[0].u_password;
-//         if (result.length == 0) {
-//             res.status(201).json({
-//                 message: 'User Does not exits'
-//             })
-//         }
-//         let pas1: string = req.body.u_password;
-//         let pas2: string = result[0].u_password;
-//         if (pas1 === pas2) {
-//             res.status(200).json({
-//                 message: 'Correct password'
-//             })
-//         }
-//         else {
-//             res.status(201).json({
-//                 message: 'Wrong password'
-//             })
-//         }
-//     }
-//     catch (e) {
-//         console.log(`Error occured in controller while geting details of password ${e}`);
-//     }
-// })
-// added IUser
-router.post('/login', async (req: Request, res: Response, next: NextFunction) => {
+// users 
+
+// Validates  user credentials with database login values 
+router.post('/login', asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     try {
         let user_service = new userService();
         let result = await user_service.login(req.body.u_name, req.body.u_password);
         if (result == true) {
-            res.status(201).json({
-                message: 'Auth Sucess'
-            })
+            new SuccessResponse('Login success', result).send(res);
         }
         else {
-            res.status(401).json({
-                message: 'Auth Failed'
-            })
+            new NotFoundResponse('Auth Failed').send(res);
         }
     }
-    catch (e) {
-        console.log(`Err: Cont: login  ${e}`);
-        throw (e);
+    catch (error) {
+        throw (error);
     }
-})
+}));
 
-//added IUser
-router.get('/:u_name', async (req: Request, res: Response, next: NextFunction) => {
+//Gets u_id , u_name from database 
+router.get('/:u_name', asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     try {
         let user_service = new userService();
         let u_name = req.params.u_name;
-        let result = await user_service.userdetails(u_name);
-        if (result.length == 1) {
-            res.status(200).json({
-                message: "User details are",
-                U_id: result[0].u_id,
-                User_Name: result[0].u_name,
-            })
+        const u_deatils: IUser[] = await user_service.userdetails(u_name);
+        if (u_deatils.length == 1) {
+            new SuccessResponse('success', u_deatils).send(res);
+            // res.status(200).json({
+            // message: "User details are",
+            // U_id: result[0].u_id,
+            // User_Name: result[0].u_name,
+            // })
         }
         else {
-            res.status(404).json({
-                message: "Auth Failed"
-            })
+            new NotFoundResponse('Auth Failed').send(res);
         }
     }
-    catch (e) {
-        console.log(`Err : Contro : userdetails ${e}`);
-        res.status(404).json({ message: e.message })
+    catch (error) {
+        // console.log(`Err : Contro : userdetails ${error}`);
+        throw error;
+        // res.status(404).json({ message: error.message })
     }
-})
+}));
 
-//added IUser
-router.post('/signup', async (req: Request, res: Response, next: NextFunction) => {
+//Creates a new record in DB 
+router.post('/signup', asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     try {
         let user_service = new userService();
-        let result = await user_service.createuser(req.body.u_name, req.body.u_password);
+        const newUser: IUser[] = await user_service.createuser(req.body.u_name, req.body.u_password);
+        new SuccessResponse('User Created', newUser).send(res);
+    }
+    catch (error) {
+        throw error
+    }
+}))
+
+// updates user password in DB
+router.put('/updatepassword', asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        let user_service = new userService();
+        const result: IUser[] = await user_service.updatepassword(req.body.u_name, req.body.u_password);
         if (result.length == 1) {
-            res.status(200).json({
-                message: "User Already Exist",
-            })
+            new SuccessResponse('Password update', result[0].u_name).send(res);
         }
         else {
-            res.status(200).json({
-                message: "New user created",
-            })
-        }
-    }
-    catch (e) {
-        console.log(`Error : Contoller  :while creating  User ${e}`);
-        res.status(404).json({
-            e
-        })
-    }
-})
-// added IUser
-router.put('/updatepassword', async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        let user_service = new userService();
-        let result = await user_service.updatepassword(req.body.u_name, req.body.u_password);
-        if (result == 1) {
-            res.status(200).json({
-                message: 'User password updated',
-            })
-        }
-        else {
-            res.status(300).json({
-                message: 'Auth Failed',
-            })
+            new NotFoundResponse('Auth Failed').send(res);
         }
     }
     catch (e) {
         console.log(`Error : Controller : UpadatePass  ${e}`);
         throw (e);
     }
-});
+}));
 
-//added IUser
-router.delete('/deleteuser', async (req: Request, res: Response, next: NextFunction) => {
+//Deletes a user in DB 
+router.delete('/deleteuser', asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     try {
         let user_service = new userService();
-        let result = await user_service.deletuser(req.body.u_name);
-        console.log(result);
-        if (result == 1) {
-            res.status(200).json({
-                message: "user deleted",
-            })
+        const result: IUser[] = await user_service.deletuser(req.body.u_name);
+        if (result.length == 1) {
+            new SuccessResponse('User Deleted', result[0].u_name).send(res);
         }
         else {
-            res.status(200).json({
-                message: "Auth Failed",
-            })
+            new BadRequestResponse('Auth Failed').send(res);
         }
     }
     catch (e) {
-        console.log(`Err: Contro:delete ${e}`);
         throw (e);
     }
-})
+}))
 
 // Org
 

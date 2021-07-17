@@ -7,7 +7,7 @@ export const db = {
   host: process.env.host,
   database: process.env.database,
   password: process.env.password,
-  port: process.env.port,
+  port: parseInt(process.env.port),
 };
 
 export const logDirectory = process.env.LOG_DIR;
