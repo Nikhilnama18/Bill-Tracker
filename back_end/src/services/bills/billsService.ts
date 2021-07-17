@@ -47,20 +47,16 @@ class billsService {
         }
     }
 
-    async deletebill(org_id: string, bill_id: string) {
-        try {
-            const orgbillsrepo = new billsRepository();
-            const findbill = await orgbillsrepo.findbill(org_id, bill_id);
-            if (findbill.rowCount > 0) {
-                return await orgbillsrepo.deletebill(bill_id);
-            }
-            else {
-                return findbill;
-            }
-        } catch (e) {
-            console.log(`Err : Orgbill :Ser : deletebill ${e} `);
-            throw (e);
+    async deletebill(user_id: string, org_id: string, bill_id: string) {
+        const orgRepo = new organizationRepositry();
+        // Check org belongs to user and org exists.
+        const userOrgs: IOrganization[] = await orgRepo.getOrganizationByIdAndUserId(user_id, org_id);
+        if (userOrgs.length == 0) {
+            throw new NotFoundError('Reqeusted organization not found for user. Please check and try again.');
         }
+
+        const billsRepo = new billsRepository();
+        return await billsRepo.deletebill(org_id, bill_id);
     }
 }
 

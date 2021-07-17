@@ -13,5 +13,12 @@ RETURNING *
 `
 //Write query for Updating a bill
 export const updatebill_Q = `Update`;
-// 
-export const deletebill_Q = `Update orgbills set isdeleted =true where bill_id =$1`
+
+export const deleteBill_Q =
+    `UPDATE
+	public.bills
+SET
+	isdeleted = true
+WHERE
+	o_id = $1 AND b_id = $2 AND isdeleted = false
+RETURNING b_id`;

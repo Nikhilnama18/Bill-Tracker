@@ -1,6 +1,6 @@
 import { Client } from 'pg';
 import { IBill, ICreateBill } from '../../contracts/IBills';
-import { getBills_Q, findbill_Q, createBill_Q, updatebill_Q, deletebill_Q } from '../../queries/QBills';
+import { getBills_Q, findbill_Q, createBill_Q, updatebill_Q, deleteBill_Q } from '../../queries/QBills';
 const client = new Client({
     user: 'nick',
     host: 'localhost',
@@ -51,13 +51,8 @@ class billsRepository {
         }
     }
 
-    async deletebill(bill_id: string) {
-        try {
-            return await client.query(deletebill_Q, [bill_id]);
-        } catch (e) {
-            console.log(`Err : OrgBills : Repo : deletebill; ${e}`);
-            throw (e);
-        }
+    async deletebill(org_id: string, bill_id: string) {
+        return (await client.query(deleteBill_Q, [org_id, bill_id])).rows;
     }
 }
 export = billsRepository;

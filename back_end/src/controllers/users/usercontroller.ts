@@ -7,6 +7,7 @@ import { IUser } from '../../contracts/IUser';
 import userService from '../../services/users/usersService';
 import { IBill, ICreateBill, isBill } from '../../contracts/IBills';
 import billsService from '../../services/bills/billsService';
+import { NotFoundError } from '../../core/ApiError';
 
 const router = Router();
 
@@ -201,4 +202,18 @@ router.get('/:u_id/orgs/:o_id/bills', asyncHandler(async (req: Request, res: Res
     }
 }))
 
-export =router;
+
+router.delete('/:u_id/orgs/:o_id/bills/:b_id', asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const billService = new billsService();
+        const bill: IBill[] = await billService.deletebill(req.params.u_id, req.params.o_id, req.params.b_id)
+        if (bill.length > 0)
+            new SuccessResponse('success', bill).send(res);
+        else
+            throw new NotFoundError('Unable to delete reqeusted bill. Please check and try again.');
+    } catch (error) {
+        console.log(`Error for ${req.url} @ ${req.method} :${error}`)
+        throw error
+    }
+}))
+export = router;
