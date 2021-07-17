@@ -1,5 +1,7 @@
 import { Client } from 'pg';
-import { createOrganization_Q, getOrganizationById_Q, getOrganizationByName_Q, getOrganizationByUserId_Q as getOrganizationsByUserId_Q } from '../../Queries/QOrganizations';
+import { createOrganization_Q, getOrganizationByIdAndUserId_Q,
+     getOrganizationByNameAndUserId_Q, getOrganizationsByUserId_Q,
+     getOrganizationById_Q } from '../../Queries/QOrganizations';
 import { ICreateOrganization, IOrganization } from '../../contracts/IOrganization';
 import { db } from '../../config';
 
@@ -19,8 +21,17 @@ class organizationRepositry {
    * @param {string} o_id Organization Id
    * @returns {IOrganization} IOrganization
    */
-  async getOrganizationById(u_id: string, o_id: string): Promise<IOrganization[]> {
-    return (await client.query(getOrganizationById_Q, [u_id, o_id])).rows;
+   async getOrganizationById(o_id: string): Promise<IOrganization[]> {
+    return (await client.query(getOrganizationById_Q, [o_id])).rows;
+  }
+
+    /**
+   * Returns a organization object if exists with given `o_id`
+   * @param {string} o_id Organization Id
+   * @returns {IOrganization} IOrganization
+   */
+  async getOrganizationByIdAndUserId(u_id: string, o_id: string): Promise<IOrganization[]> {
+    return (await client.query(getOrganizationByIdAndUserId_Q, [u_id, o_id])).rows;
   }
 
   /**
@@ -38,8 +49,8 @@ class organizationRepositry {
    * @param {string} o_name Organization Name
    * @returns {IOrganization[]} IOrganization
    */
-  async getOrganizationByName(u_id: string, o_name: string): Promise<IOrganization[]> {
-    return (await client.query(getOrganizationByName_Q, [u_id, o_name])).rows;
+  async getOrganizationByNameAndUserId(u_id: string, o_name: string): Promise<IOrganization[]> {
+    return (await client.query(getOrganizationByNameAndUserId_Q, [u_id, o_name])).rows;
   }
 
   /**

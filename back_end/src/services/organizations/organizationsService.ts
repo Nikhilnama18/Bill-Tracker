@@ -6,7 +6,7 @@ import { BadRequestError } from "../../core/ApiError";
 class organizationService {
   async getOrganizationById(u_id: string, o_id: string) {
     const orgRepo = new organizationRepositry();
-    return (await orgRepo.getOrganizationById(u_id, o_id));
+    return (await orgRepo.getOrganizationByIdAndUserId(u_id, o_id));
 
   }
 
@@ -17,7 +17,7 @@ class organizationService {
 
   async createOrganization(org: ICreateOrganization): Promise<IOrganization[]> {
     const orgRepo = new organizationRepositry();
-    const existingOrg: IOrganization[] = await orgRepo.getOrganizationByName((org.u_id).toString(),
+    const existingOrg: IOrganization[] = await orgRepo.getOrganizationByNameAndUserId((org.u_id).toString(),
       (org.o_name));
 
     if (existingOrg.length != 0)

@@ -1,31 +1,29 @@
-import { ICreateBill } from '../../contracts/IBills';
+import { IBill, ICreateBill } from '../../contracts/IBills';
 import { IOrganization } from '../../contracts/IOrganization';
 import { BadRequestError, NotFoundError } from '../../core/ApiError';
 import billsRepository from '../../repositories/bills/billsRepo';
 import organizationRepositry from '../../repositories/organizations/organizationsRepo';
+import userRepositry from '../../repositories/user/usersRepo';
 class billsService {
-    async getbills(org_id: string) {
-        try {
-            const orgbillsrepo = new billsRepository();
-            const findorg = await orgbillsrepo.findorg(org_id);
-            if (findorg.rowCount > 0) {
-                return await orgbillsrepo.getorgbills(org_id);
-            }
-            else {
-                return findorg;
-            }
-        } catch (e) {
-            console.log(`Err : Orgbill :Ser : getbill ${e} `);
-            throw (e);
+    async getBills(user_id: string, org_id: string): Promise<IBill[]> {
+        const orgRepo = new organizationRepositry();
+
+        // Check org belongs to user and org exists.
+        const userOrgs: IOrganization[] = await orgRepo.getOrganizationByIdAndUserId(user_id, org_id);
+        if (userOrgs.length == 0) {
+            throw new NotFoundError('Reqeusted organization not found for user. Please check and try again.');
         }
 
+        // Fetch org bills
+        const billsRepo = new billsRepository();
+        return (await billsRepo.getOrgBills(user_id, org_id)).rows;
     }
 
     async createbill(bill: ICreateBill) {
         const billsRepo = new billsRepository();
         // Check of org exits.
         const orgRepo = new organizationRepositry();
-        const existingOrg: IOrganization[] = await orgRepo.getOrganizationById((bill.u_id).toString(),
+        const existingOrg: IOrganization[] = await orgRepo.getOrganizationByIdAndUserId((bill.u_id).toString(),
             (bill.o_id).toString());
         if (existingOrg.length == 0)
             throw new NotFoundError("Unable to create bill for non-existent organization. Please check and try again.")

@@ -24,31 +24,6 @@ const router = Router();
 // })
 
 // Get All bills
-router.get('/', async (req: Request, res: Response, next: NextFunction) => {
-    console.log("HIT in controller bills/ get ",req.params)
-    res.json(req.params)
-    try {
-        const billsservice = new orgbillService();
-        const results = await billsservice.getbills(req.params.org_id);
-        console.log(`req.params.org_id : ${req.params.org_id}`)
-        // Handle no bills and no orgnization
-        if (results.rowCount > 0) {
-            res.status(201).json({
-                message: 'Orgnization bills are',
-                bill: results.rows
-            })
-        } else {
-            res.status(201).json({
-                message: 'No bills exits'
-            })
-        }
-    }
-    catch (e) {
-        console.log(`Err : orgbill : Cont : getbills  ${e}`);
-        throw (e);
-    }
-})
-
 // Update bill
 router.put('/', async (req: Request, res: Response, next: NextFunction) => {
     try {

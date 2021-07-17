@@ -4,7 +4,7 @@ import asyncHandler from '../../core/asyncHandler';
 import { ICreateOrganization, IOrganization, isOrganization } from '../../contracts/IOrganization';
 import organizationService from '../../services/organizations/organizationsService';
 import userService from '../../services/users/usersService';
-import { IBill, ICreateBill } from '../../contracts/IBills';
+import { IBill, ICreateBill, isBill } from '../../contracts/IBills';
 import billsService from '../../services/bills/billsService';
 
 const router = Router();
@@ -233,6 +233,23 @@ router.post('/:u_id/orgs/:o_id/bills', asyncHandler(async (req: Request, res: Re
         throw error;
     }
 
+}))
+
+// Fetch all bill of a org
+router.get('/:u_id/orgs/:o_id/bills', asyncHandler(async (req: Request, res: Response) => {
+    try {
+        const billService = new billsService();
+        const bills: IBill[] = await billService.getBills(req.params.u_id, req.params.o_id)
+        if (bills.length > 0 && isBill(bills[0])) {
+            new SuccessResponse('success', bills).send(res);
+        }
+        else {
+            new NotFoundResponse('No bills found. Please check and try again.').send(res);
+        }
+    } catch (error) {
+        console.log(`Error for ${req.url} @ ${req.method} :${error}`)
+        throw error
+    }
 }))
 
 export =router;

@@ -1,6 +1,6 @@
 import { Client } from 'pg';
 import { IBill, ICreateBill } from '../../contracts/IBills';
-import { getbills_Q, findbill_Q, createBill_Q, findorg_Q, updatebill_Q, deletebill_Q } from '../../Queries/QBills';
+import { getBills_Q, findbill_Q, createBill_Q, updatebill_Q, deletebill_Q } from '../../Queries/QBills';
 const client = new Client({
     user: 'nick',
     host: 'localhost',
@@ -11,25 +11,10 @@ const client = new Client({
 client.connect();
 
 class billsRepository {
-    async getorgbills(org_id: string) {
-        try {
-            return await client.query(getbills_Q, [org_id]);
-        }
-        catch (e) {
-            console.log(`Err : OrgBills : Repo :getbills ${e}`);
-            throw (e);
-        }
+    async getOrgBills(user_id: string, org_id: string) {
+        return await client.query(getBills_Q, [user_id, org_id]);
     }
 
-    async findorg(org_id: string) {
-        try {
-            return await client.query(findorg_Q, [org_id]);
-        }
-        catch (e) {
-            console.log(`Err : OrgBills : Repo : findorg ${e}`);
-            throw (e);
-        }
-    }
     async findbill(org_id: string, bill_id: string) {
         try {
             return await client.query(findbill_Q, [org_id, bill_id]);//true or false
