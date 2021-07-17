@@ -1,5 +1,5 @@
 import Router, { Request, Response, NextFunction } from 'express';
-import orgbillService from '../../services/bills/orgbillsservice';
+import orgbillService from '../../services/bills/billsService';
 const router = Router();
 
 // Create Bill

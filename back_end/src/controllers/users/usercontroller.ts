@@ -3,7 +3,7 @@ import { NotFoundResponse, SuccessResponse } from '../../core/ApiResponse';
 import asyncHandler from '../../core/asyncHandler';
 import { ICreateOrganization, IOrganization, isOrganization } from '../../contracts/IOrganization';
 import organizationService from '../../services/organizations/organizationsService';
-import userService from '../../services/users/userservice';
+import userService from '../../services/users/usersService';
 
 const router = Router();
 

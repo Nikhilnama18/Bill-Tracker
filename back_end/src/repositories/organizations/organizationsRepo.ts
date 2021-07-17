@@ -1,5 +1,5 @@
 import { Client } from 'pg';
-import { createOrganization_Q, getOrganizationById_Q, getOrganizationByName_Q, getOrganizationByUserId_Q as getOrganizationsByUserId_Q } from '../../Queries/organizations/organizationqueries';
+import { createOrganization_Q, getOrganizationById_Q, getOrganizationByName_Q, getOrganizationByUserId_Q as getOrganizationsByUserId_Q } from '../../Queries/QOrganizations';
 import { ICreateOrganization, IOrganization } from '../../contracts/IOrganization';
 import { db } from '../../config';
 
