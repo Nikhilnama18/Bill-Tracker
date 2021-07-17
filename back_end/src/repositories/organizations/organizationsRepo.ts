@@ -1,5 +1,5 @@
 import { Client } from 'pg';
-import { createOrganization_Q, getOrganizationById_Q, getOrganizationByName_Q, getOrganizationByUserId_Q as getOrganizationsByUserId_Q } from '../../Queries/QOrganizations';
+import { createOrganization_Q, getOrganizationById_Q, getOrganizationByName_Q, getOrganizationByUserId_Q as getOrganizationsByUserId_Q } from '../../queries/QOrganizations';
 import { ICreateOrganization, IOrganization } from '../../contracts/IOrganization';
 import { db } from '../../config';
 
@@ -8,7 +8,7 @@ const client = new Client({
   host: db.host,
   database: db.database,
   password: db.password,
-  port: parseInt(db.port),
+  port: db.port,
 });
 client.connect();
 

@@ -1,6 +1,6 @@
 import { Client } from 'pg';
 import { IBill, ICreateBill } from '../../contracts/IBills';
-import { getbills_Q, findbill_Q, createBill_Q, findorg_Q, updatebill_Q, deletebill_Q } from '../../Queries/QBills';
+import { getbills_Q, findbill_Q, createBill_Q, findorg_Q, updatebill_Q, deletebill_Q } from '../../queries/QBills';
 const client = new Client({
     user: 'nick',
     host: 'localhost',
