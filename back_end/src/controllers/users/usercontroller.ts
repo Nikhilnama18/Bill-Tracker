@@ -5,9 +5,10 @@ import { ICreateOrganization, IOrganization, isOrganization } from '../../contra
 import organizationService from '../../services/organizations/organizationsService';
 import { IUser } from '../../contracts/IUser';
 import userService from '../../services/users/usersService';
-import { IBill, ICreateBill, isBill } from '../../contracts/IBills';
+import { IBill, ICreateBill, isBill, IUpdateBill } from '../../contracts/IBills';
 import billsService from '../../services/bills/billsService';
-import { NotFoundError } from '../../core/ApiError';
+import { NoDataError, NotFoundError } from '../../core/ApiError';
+import { isNull, isUndefined } from 'lodash';
 
 const router = Router();
 
@@ -202,6 +203,29 @@ router.get('/:u_id/orgs/:o_id/bills', asyncHandler(async (req: Request, res: Res
     }
 }))
 
+router.put('/:u_id/orgs/:o_id/bills/:b_id', asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const updateBill: IUpdateBill = {
+            u_id: parseInt(req.params.u_id),
+            o_id: parseInt(req.params.o_id),
+            b_id: parseInt(req.params.b_id),
+            ammount: req.body.ammount,
+            due_ammount: req.body.due_ammount
+        }
+        // Validation
+        if ((isUndefined(updateBill.ammount) || isNull(updateBill.ammount)) &&
+            (isUndefined(updateBill.due_ammount) || isNull(updateBill.due_ammount)))
+            throw new NoDataError('Both ammount and due_ammount are not specified. Cannot process update on the bill.')
+
+        const billService = new billsService();
+        const bill: IBill[] = await billService.updatebill(updateBill)
+        new SuccessResponse('success', bill).send(res);
+
+    } catch (error) {
+        console.log(`Error for ${req.url} @ ${req.method} :${error}`)
+        throw error
+    }
+}))
 
 router.delete('/:u_id/orgs/:o_id/bills/:b_id', asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     try {

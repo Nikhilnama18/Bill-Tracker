@@ -1,4 +1,8 @@
-export const findbill_Q = `Select 1 from orgbills where bill_id =$1`;
+export const findBill_Q =
+    `SELECT b_id
+FROM public.bills
+WHERE o_id = $1 AND b_id = $2`;
+
 export const getBills_Q =
     `SELECT * 
 FROM public.bills
@@ -12,13 +16,28 @@ VALUES($1, $2, $3, $4, $5, $6, $7, $8)
 RETURNING *
 `
 //Write query for Updating a bill
-export const updatebill_Q = `Update`;
+export const updateBill_Q = `UPDATE public.bills
+SET ammount = $4 , due_ammount = $5 , u_date = now()
+WHERE u_id = $1 AND o_id = $2 AND b_id = $3
+RETURNING *`;
+
+export const updateBillAmmount_Q = `UPDATE public.bills
+SET ammount = $4 , u_date = now()
+WHERE u_id = $1 AND o_id = $2 AND b_id = $3
+RETURNING *`;
+
+
+export const updateBillDueAmmount_Q = `UPDATE public.bills
+SET due_ammount= $4 , u_date = now()
+WHERE u_id = $1 AND o_id = $2 AND b_id = $3
+RETURNING *`;
+
 
 export const deleteBill_Q =
     `UPDATE
 	public.bills
 SET
-	isdeleted = true
+	isdeleted = true, u_date = now()
 WHERE
 	o_id = $1 AND b_id = $2 AND isdeleted = false
 RETURNING b_id`;
