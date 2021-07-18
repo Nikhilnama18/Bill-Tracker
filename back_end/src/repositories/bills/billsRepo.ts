@@ -1,6 +1,6 @@
 import { Client } from 'pg';
-import { IBill, ICreateBill } from '../../contracts/IBills';
-import { getbills_Q, findbill_Q, createBill_Q, findorg_Q, updatebill_Q, deletebill_Q } from '../../queries/QBills';
+import { IBill, ICreateBill, IUpdateBill } from '../../contracts/IBills';
+import { getBills_Q, findBill_Q, createBill_Q, updateBill_Q, deleteBill_Q, updateBillAmmount_Q, updateBillDueAmmount_Q } from '../../queries/QBills';
 const client = new Client({
     user: 'nick',
     host: 'localhost',
@@ -11,68 +11,41 @@ const client = new Client({
 client.connect();
 
 class billsRepository {
-    async getorgbills(org_id: string) {
-        try {
-            return await client.query(getbills_Q, [org_id]);
-        }
-        catch (e) {
-            console.log(`Err : OrgBills : Repo :getbills ${e}`);
-            throw (e);
-        }
+
+    async getOrgBills(user_id: string, org_id: string) {
+        return await client.query(getBills_Q, [user_id, org_id]);
     }
 
-    async findorg(org_id: string) {
-        try {
-            return await client.query(findorg_Q, [org_id]);
-        }
-        catch (e) {
-            console.log(`Err : OrgBills : Repo : findorg ${e}`);
-            throw (e);
-        }
-    }
-    async findbill(org_id: string, bill_id: string) {
-        try {
-            return await client.query(findbill_Q, [org_id, bill_id]);//true or false
-        }
-        catch (e) {
-            console.log(`Err : OrgBills : Repo : findorg ${e}`);
-            throw (e);
-        }
+    async findBillById(org_id: string, bill_id: string) {
+        return (await client.query(findBill_Q, [org_id, bill_id])).rows;
     }
 
-    async updatebill(org_id: string, bill_id: string, bill_amt: number) {
-        try {
-            const values: any = [org_id, bill_id, bill_amt]
-            return await client.query(updatebill_Q, values);
-        } catch (e) {
-            console.log(`Err : OrgBills : Repo : updatebill; ${e}`);
-            throw (e);
-        }
+    async updateBill(bill: IUpdateBill) {
+        return (await client.query(updateBill_Q,
+            [bill.u_id, bill.o_id, bill.b_id, bill.ammount, bill.due_ammount])).rows;
     }
 
+    async updateBillAmmount(bill: IUpdateBill) {
+        return (await client.query(updateBillAmmount_Q,
+            [bill.u_id, bill.o_id, bill.b_id, bill.ammount])).rows;
+    }
+
+    async updateBillDueAmmount(bill: IUpdateBill) {
+        return (await client.query(updateBillDueAmmount_Q,
+            [bill.u_id, bill.o_id, bill.b_id, bill.due_ammount])).rows;
+    }
     /**
        * Creates a new bill and returns it.
        * @param {IBill} org A bill
        * @returns {IBill[]} IBill array
        */
     async createBill(bill: ICreateBill): Promise<IBill[]> {
-        try {
-            return (await client.query(createBill_Q, [bill.o_id, bill.u_id,
-            bill.ammount, bill.due_ammount, bill.issue_timestamp, false, new Date(), null])).rows;
-        }
-        catch (e) {
-            console.log(e)
-            throw e
-        }
+        return (await client.query(createBill_Q, [bill.o_id, bill.u_id,
+        bill.ammount, bill.due_ammount, bill.issue_timestamp, false, new Date(), null])).rows;
     }
 
-    async deletebill(bill_id: string) {
-        try {
-            return await client.query(deletebill_Q, [bill_id]);
-        } catch (e) {
-            console.log(`Err : OrgBills : Repo : deletebill; ${e}`);
-            throw (e);
-        }
+    async deletebill(org_id: string, bill_id: string) {
+        return (await client.query(deleteBill_Q, [org_id, bill_id])).rows;
     }
 }
 export = billsRepository;

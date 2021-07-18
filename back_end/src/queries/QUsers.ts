@@ -1,3 +1,13 @@
+export const getuserPassword_Q = `
+SELECT
+	u_password
+FROM
+	userdetails
+WHERE
+	u_name = $1
+AND 
+    isdeleted = false`;
+
 export const getUserById_Q = `
 SELECT
 	*

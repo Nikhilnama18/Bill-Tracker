@@ -1,6 +1,4 @@
-import { exitOnError } from "winston";
-
-export const getOrganizationById_Q =
+export const getOrganizationByIdAndUserId_Q =
   `SELECT *
 FROM
   organizations
@@ -11,15 +9,20 @@ AND
 AND 
   isdeleted=false`;
 
-export const getOrganizationByName_Q =
-  `SELECT *
+export const getOrganizationByNameAndUserId_Q =
+    `SELECT *
 FROM organizations
-WHERE 
-  u_id = $1 
-AND 
-  o_name = $2
-AND 
-  isdeleted=false`;
+WHERE u_id = $1 AND o_name = $2 AND isdeleted = false`;
+
+export const getOrganizationsByUserId_Q =
+    `SELECT *
+FROM organizations
+WHERE u_id = $1 AND isdeleted = false`;
+
+export const getOrganizationById_Q =
+    `SELECT * 
+    FROM organizations
+    WHERE o_id = $1 AND isdeleted = false`;
 
 export const getOrganizationByUserId_Q =
   `SELECT *

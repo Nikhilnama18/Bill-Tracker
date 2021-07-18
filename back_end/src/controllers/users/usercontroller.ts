@@ -5,9 +5,10 @@ import { ICreateOrganization, IOrganization, isOrganization, IUpdateOrganization
 import organizationService from '../../services/organizations/organizationsService';
 import { IUser } from '../../contracts/IUser';
 import userService from '../../services/users/usersService';
-import { IBill, ICreateBill } from '../../contracts/IBills';
+import { IBill, ICreateBill, isBill, IUpdateBill } from '../../contracts/IBills';
 import billsService from '../../services/bills/billsService';
-import { BadRequestError } from '../../core/ApiError';
+import { NoDataError, NotFoundError, BadRequestError } from '../../core/ApiError';
+import { isNull, isUndefined } from 'lodash';
 
 const router = Router();
 
@@ -217,4 +218,58 @@ router.post('/:u_id/orgs/:o_id/bills', asyncHandler(async (req: Request, res: Re
 
 }))
 
-export =router;
+// Fetch all bill of a org
+router.get('/:u_id/orgs/:o_id/bills', asyncHandler(async (req: Request, res: Response) => {
+    try {
+        const billService = new billsService();
+        const bills: IBill[] = await billService.getBills(req.params.u_id, req.params.o_id)
+        if (bills.length > 0 && isBill(bills[0])) {
+            new SuccessResponse('success', bills).send(res);
+        }
+        else {
+            new NotFoundResponse('No bills found. Please check and try again.').send(res);
+        }
+    } catch (error) {
+        console.log(`Error for ${req.url} @ ${req.method} :${error}`)
+        throw error
+    }
+}))
+
+router.put('/:u_id/orgs/:o_id/bills/:b_id', asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const updateBill: IUpdateBill = {
+            u_id: parseInt(req.params.u_id),
+            o_id: parseInt(req.params.o_id),
+            b_id: parseInt(req.params.b_id),
+            ammount: req.body.ammount,
+            due_ammount: req.body.due_ammount
+        }
+        // Validation
+        if ((isUndefined(updateBill.ammount) || isNull(updateBill.ammount)) &&
+            (isUndefined(updateBill.due_ammount) || isNull(updateBill.due_ammount)))
+            throw new NoDataError('Both ammount and due_ammount are not specified. Cannot process update on the bill.')
+
+        const billService = new billsService();
+        const bill: IBill[] = await billService.updatebill(updateBill)
+        new SuccessResponse('success', bill).send(res);
+
+    } catch (error) {
+        console.log(`Error for ${req.url} @ ${req.method} :${error}`)
+        throw error
+    }
+}))
+
+router.delete('/:u_id/orgs/:o_id/bills/:b_id', asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const billService = new billsService();
+        const bill: IBill[] = await billService.deletebill(req.params.u_id, req.params.o_id, req.params.b_id)
+        if (bill.length > 0)
+            new SuccessResponse('success', bill).send(res);
+        else
+            throw new NotFoundError('Unable to delete reqeusted bill. Please check and try again.');
+    } catch (error) {
+        console.log(`Error for ${req.url} @ ${req.method} :${error}`)
+        throw error
+    }
+}))
+export = router;
