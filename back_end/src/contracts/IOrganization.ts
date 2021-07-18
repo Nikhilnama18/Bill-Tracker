@@ -17,6 +17,13 @@ export interface ICreateOrganization {
   o_location: string;
 }
 
+export interface IUpdateOrganization {
+  u_id: string;
+  o_id: string;
+  o_name: string;
+  o_gst: string;
+  o_location: string;
+}
 export function isOrganization(org: IOrganization | any): org is IOrganization {
   return (org as IOrganization).o_name !== undefined;
 }

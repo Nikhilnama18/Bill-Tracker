@@ -8,6 +8,16 @@ WHERE
 AND 
     isdeleted = false`;
 
+export const getUserById_Q = `
+SELECT
+	*
+FROM
+	userdetails
+WHERE
+	u_id = $1
+AND 
+    isdeleted = false`;
+
 export const createuser_Q = `
 INSERT INTO
     userdetails (u_name, u_password)
