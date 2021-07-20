@@ -7,7 +7,7 @@
       v-if="showuser"
       :title="showuser ? 'Signup' : 'Cancel'"
     />
-    <NewUser @goBack="signup" @create="what" v-if="!showuser" />
+    <NewUser @goBack="signup" @create="create" v-if="!showuser" />
   </div>
 </template>
 
@@ -30,14 +30,35 @@ export default {
     NewUser,
   },
   methods: {
-    login(data) {
-      console.log(data);
+    async login(data) {
+      const res = await fetch("http://localhost:3001/v1/users/login", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (res.status == 200) {
+        const result = await res.json();
+        console.log(result);
+      } else {
+        alert("Unable to login.");
+      }
     },
     signup() {
       this.showuser = !this.showuser;
     },
-    what() {
-      console.log("Okay");
+    async create(data) {
+      const res = await fetch("http://localhost:3001/v1/users/signup", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      const result = await res.json();
+      console.log(result);
     },
   },
 };

@@ -1,5 +1,6 @@
 <template>
   <div class="userDetails">
+    <h3>Create New User</h3>
     Enter User Name:
     <input v-model="u_name" type="text" id="u_name" placeholder="UserName" />
     <br />
@@ -42,7 +43,15 @@ export default {
         alert("Passwords are not same ");
         return;
       }
-      this.$emit("create");
+      if (this.u_name == "" || this.u_pwd1 == "") {
+        alert("Please Enter all details");
+        return;
+      }
+      if (this.u_pwd1.length <=5) {
+        alert("Password is to weak");
+        return;
+      }
+      this.$emit("create", { u_name: this.u_name, u_password: this.u_pwd1 });
     },
     goBack() {
       this.$emit("goBack");
