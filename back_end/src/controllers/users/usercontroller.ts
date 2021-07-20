@@ -128,12 +128,12 @@ router.get('/:u_id/orgs', asyncHandler(async (req: Request, res: Response) => {
     try {
         const orgSer = new organizationService();
         const org: IOrganization[] = await orgSer.getOrganizationByUserId(req.params.u_id);
-        if (org.length > 0 && isOrganization(org[0])) {
+        // if (org.length > 0 && isOrganization(org[0])) {
             new SuccessResponse('success', org).send(res);
-        }
-        else {
-            new NotFoundResponse('No organizations found. Please check and try again.').send(res);
-        }
+            // }
+            // else {
+            // new NotFoundResponse('No organizations found. Please check and try again.').send(res);
+        // }
     } catch (error) {
         console.log(`Error for ${req.url} @ ${req.method} :${error}`)
         throw error

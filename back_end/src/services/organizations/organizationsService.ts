@@ -3,6 +3,7 @@ import organizationRepositry from "../../repositories/organizations/organization
 import { BadRequestError } from "../../core/ApiError";
 import userRepositry from "../../repositories/user/usersRepo";
 import { IUser } from "../../contracts/IUser";
+import userService from "../users/usersService";
 
 
 class organizationService {
@@ -14,6 +15,10 @@ class organizationService {
 
   async getOrganizationByUserId(u_id: string) {
     const orgRepo = new organizationRepositry();
+    const userRepo = new userRepositry();
+    const userdetails = await userRepo.getUserById(u_id);
+    if (userdetails.length <= 0)
+      throw new BadRequestError("User Does not exits. Please check and Try");
     return (await orgRepo.getOrganizationsByUserId(u_id));
   }
 
