@@ -1,21 +1,19 @@
 <template>
-  <div class="container">
+  <div>
     <Header title="/Billing App" />
-    <UserCredentails @signin="login" v-if="showuser" />
-    <Signup
+    <!-- <UserCredentails @signin="login" v-if="showuser" /> -->
+    <!-- <Signup
       @signup="signup"
       v-if="showuser"
       :title="showuser ? 'Signup' : 'Cancel'"
     />
-    <NewUser @goBack="signup" @create="create" v-if="!showuser" />
+    <NewUser @goBack="signup" @create="create" v-if="!showuser" /> -->
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
 import Header from "./components/Header.vue";
-import UserCredentails from "./components/UserCredentails.vue";
-import Signup from "./components/Signup.vue";
-import NewUser from "./components/NewUser.vue";
 export default {
   name: "App",
   data() {
@@ -25,9 +23,6 @@ export default {
   },
   components: {
     Header,
-    UserCredentails,
-    Signup,
-    NewUser,
   },
   methods: {
     async login(data) {

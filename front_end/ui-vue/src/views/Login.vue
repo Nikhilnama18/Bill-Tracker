@@ -10,15 +10,15 @@
       id="u_password"
       placeholder="Password"
     />
-    <Button @signin="signin" title="SignIn" />
+    <Button @click="signin" title="SignIn" />
   </div>
 </template>
 
 
 <script>
-import Button from "./Button.vue";
+import Button from "../components/Button.vue";
 export default {
-  name: "UserCredentails",
+  name: "Login",
   data() {
     return {
       u_name: "",
@@ -30,6 +30,7 @@ export default {
   },
   methods: {
     signin() {
+        // TODO : Need to rewrite this.w
       this.$emit("signin", {
         u_name: this.u_name,
         u_password: this.u_password,

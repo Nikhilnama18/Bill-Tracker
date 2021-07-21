@@ -1,7 +1,7 @@
 <template>
   <div>
     <button
-      @click="Submit"
+      @click="$emit('click')"
       id="submit"
       :style="{ background: color }"
       class="btn"
@@ -14,14 +14,10 @@
 <script>
 export default {
   name: "Button",
-  methods: {
-    Submit() {
-      this.$emit("signin");
-    },
-  },
   props: {
     title: String,
     color: String,
   },
+  emits: ["click"],
 };
 </script>
