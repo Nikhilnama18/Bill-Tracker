@@ -53,7 +53,7 @@ router.get('/:u_name', asyncHandler(async (req: Request, res: Response, next: Ne
 }));
 
 //Creates a new record in DB 
-router.post('/signup', authentication, asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+router.post('/signup', asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     try {
         let user_service = new userService();
         const newUser: IUser[] = await user_service.createuser(req.body.u_name, req.body.u_password);

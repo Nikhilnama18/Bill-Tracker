@@ -2,6 +2,7 @@
   <div class="containers">
     <h1>Organisations</h1>
     <Button @click="addorg" title="Add Organisation" color="green" />
+    <Organisations v-if="logged" :Orgs="Orgs" />
     <!-- <Button @click="" title="Cancel" color="red" /> -->
     <p v-if="true"></p>
   </div>
@@ -9,16 +10,20 @@
 
 <script>
 import Button from "../components/Button.vue";
+import Organisations from "../components/Organisations.vue";
 export default {
   name: "Dashboard",
   data() {
     return {
       u_id: Number,
       jwtToken: String,
+      Orgs: Array,
+      logged: false,
     };
   },
   components: {
     Button,
+    Organisations,
   },
   methods: {
     addorg() {
@@ -36,8 +41,8 @@ export default {
       });
       if (response.status === 200) {
         let result = await response.json();
-        console.log("Results ", result.data);
-        console.log("Keys ",Object.keys(result));
+        this.logged = true;
+        this.Orgs = result.data;
       }
     },
   },

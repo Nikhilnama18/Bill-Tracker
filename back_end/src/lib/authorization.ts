@@ -5,7 +5,7 @@ import { customRequest } from './customRequest'
 
 const authentication = ((req: Request, res: Response, next: NextFunction) => {
     try {
-        // next()
+        next()
 
         const token: string = req.headers.authorization ? req.headers.authorization.split(" ")[1] :
             req.body.token ? req.body.token : ''
