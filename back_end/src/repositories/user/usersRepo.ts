@@ -1,7 +1,7 @@
 import { Client } from 'pg';
 import { db } from '../../config';
 import { createuser_Q, upadatePassword_Q, findUser_Q, deleteuser_Q, getuserDeatils_Q, findperson_Q, getUserById_Q, getuserPassword_Q } from '../../queries/QUsers';
-import { IUser } from '../../contracts/IUser';
+import { ICreateUser, IUser } from '../../contracts/IUser';
 const client = new Client({
     user: db.user,
     host: db.host,
@@ -25,8 +25,9 @@ class userRepositry {
         return (await client.query(findperson_Q, [u_name])).rows
     }
 
-    async createUser(u_name: string, u_password: string): Promise<IUser[]> {
-        return (await client.query(createuser_Q, [u_name, u_password])).rows;
+    async createUser(newUser: ICreateUser): Promise<IUser[]> {
+        return (await client.query(createuser_Q,
+            [newUser.u_name, newUser.u_password, newUser.u_org_name, newUser.u_org_gst, newUser.u_org_location, newUser.isdeleted])).rows;
     }
 
     async updatePassword(u_name: string, new_password: string) {

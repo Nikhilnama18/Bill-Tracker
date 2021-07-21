@@ -3,14 +3,14 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken'
 import { AuthFailureError, BadRequestError, NotFoundError } from '../../core/ApiError';
 import { jwtkey } from '../../config'
-import { ILoginResponse } from '../../contracts/IUser';
+import { ICreateUser, ILoginResponse } from '../../contracts/IUser';
 class userService {
 
     async login(u_name: string, u_password: string): Promise<ILoginResponse> {
         const userrepo = new userRepositry();
         const userresults = await userrepo.findUser(u_name);
         if (userresults.length == 0) {
-            new NotFoundError()
+            throw new NotFoundError("Invalid User Credentials. Please check and try agian.")
         }
         const userpassword = await userrepo.getuserPassword(u_name);
         const result = await bcrypt.compare(u_password, userpassword.rows[0].u_password);
@@ -26,14 +26,14 @@ class userService {
     }
 
 
-    async createuser(u_name: string, u_password: string) {
+    async createuser(newUser: ICreateUser) {
         const userrepo = new userRepositry();
-        const userresults = await userrepo.findperson(u_name);
+        const userresults = await userrepo.findperson(newUser.u_name);
         if (userresults.length == 1) {
             throw new BadRequestError('User Already Exits');
         }
-        const hash = await bcrypt.hash(u_password, 10)
-        return await userrepo.createUser(u_name, hash);
+        newUser.u_password = await bcrypt.hash(newUser.u_password, 10)
+        return await userrepo.createUser(newUser);
     }
 
 

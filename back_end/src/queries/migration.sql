@@ -14,10 +14,13 @@ CREATE TABLE public.userdetails (
 	u_id serial NOT NULL,
 	u_name varchar NOT NULL,
 	u_password varchar NOT NULL,
+    u_org_name varchar NOT NULL,
+    u_org_gst varchar NOT NULL,
+    u_org_location varchar NOT NULL,
 	isdeleted bool NOT NULL DEFAULT false,
     c_date timestamp DEFAULT now(),
     u_date timestamp DEFAULT NULL,
-	CONSTRAINT userdetails_u_id_key UNIQUE (u_id),
+    CONSTRAINT userdetails_u_id_key UNIQUE (u_id),
 	CONSTRAINT userdetails_u_name_key UNIQUE (u_name)
 );
 
