@@ -1,16 +1,21 @@
 <template>
-  <div class="userDetails">
-    UserName:
-    <input v-model="u_name" type="text" id="u_name" placeholder="User Name" />
-    <br />
-    Password :
-    <input
-      v-model="u_password"
-      type="password"
-      id="u_password"
-      placeholder="Password"
-    />
-    <Button @click="signin" title="SignIn" />
+  <div class="containers">
+    <div class="userDetails">
+      UserName:
+      <input v-model="u_name" type="text" id="u_name" placeholder="User Name" />
+      <br />
+      Password :
+      <input
+        v-model="u_password"
+        type="password"
+        id="u_password"
+        placeholder="Password"
+      />
+      <Button @click="signin" title="SignIn" color="black" />
+      <router-link to="/">
+        <Button title="Cancel" color="red" />
+      </router-link>
+    </div>
   </div>
 </template>
 
@@ -29,12 +34,25 @@ export default {
     Button,
   },
   methods: {
-    signin() {
-        // TODO : Need to rewrite this.w
-      this.$emit("signin", {
+    async signin() {
+      const data = {
         u_name: this.u_name,
         u_password: this.u_password,
+      };
+      const res = await fetch("api/users/login", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(data),
       });
+      const result = await res.json(res);
+      console.log(result);
+      // if (result.statusCode === "10000") {
+      // this.$router.push("Dashboard");
+      // }
+      // if(result.data)
+
     },
   },
 };
@@ -48,5 +66,14 @@ export default {
   margin: 5px;
   padding: 10px 20px;
   cursor: pointer;
+}
+.containers {
+  max-width: 500px;
+  margin: 30px auto;
+  overflow: auto;
+  min-height: 100px;
+  border: 1px solid steelblue;
+  padding: 20px;
+  border-radius: 10px;
 }
 </style>

@@ -1,19 +1,30 @@
 import userRepositry from '../../repositories/user/usersRepo';
 import bcrypt from 'bcrypt';
-import { BadRequestError } from '../../core/ApiError';
+import jwt from 'jsonwebtoken'
+import { AuthFailureError, BadRequestError, NotFoundError } from '../../core/ApiError';
+import { jwtkey } from '../../config'
+import { ILoginResponse } from '../../contracts/IUser';
 class userService {
 
-    async login(u_name: string, u_password: string) {
+    async login(u_name: string, u_password: string): Promise<ILoginResponse> {
         const userrepo = new userRepositry();
         const userresults = await userrepo.findUser(u_name);
-        if (userresults.length > 0) {
-            const userpassword = await userrepo.getuserPassword(u_name);
-            return await bcrypt.compare(u_password, userpassword.rows[0].u_password);
+        if (userresults.length == 0) {
+            new NotFoundError()
         }
-        else {
-            return false;
+        const userpassword = await userrepo.getuserPassword(u_name);
+        const result = await bcrypt.compare(u_password, userpassword.rows[0].u_password);
+        if (result == false) {
+            throw new AuthFailureError()
+        }
+        const token: string = await jwt.sign({ id: userresults[0].u_id }, jwtkey, { expiresIn: 6000 })
+        return {
+            u_id: userresults[0].u_id,
+            auth: result,
+            token: token,
         }
     }
+
 
     async createuser(u_name: string, u_password: string) {
         const userrepo = new userRepositry();

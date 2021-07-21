@@ -20,9 +20,9 @@
       id="u_password1"
       placeholder="Re-Enter Password"
     />
+    <Button @click="create" title="Create" />
+    <Button @click="goBack" title="Cancel" color="red" />
   </div>
-  <Button @click="create" title="Create" />
-  <Button @click="goBack" title="Cancel" color="red" />
 </template>
 <script>
 import Button from "./Button.vue";
@@ -48,7 +48,7 @@ export default {
         alert("Please Enter all details");
         return;
       }
-      if (this.u_pwd1.length <=5) {
+      if (this.u_pwd1.length <= 5) {
         alert("Password is to weak");
         return;
       }

@@ -1,6 +1,7 @@
 // Mapper for environment variables
 export const environment = process.env.NODE_ENV;
 export const PORT = parseInt(process.env.PORT);
+export const jwtkey = process.env.jwtkey
 
 export const db = {
   user: process.env.user,
