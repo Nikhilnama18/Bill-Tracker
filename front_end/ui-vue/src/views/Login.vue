@@ -11,6 +11,7 @@
         id="u_password"
         placeholder="Password"
       />
+      <p v-if="loginFail">Username or password is wrong.</p>
       <Button @click="signin" title="SignIn" color="black" />
       <router-link to="/">
         <Button title="Cancel" color="red" />
@@ -28,6 +29,7 @@ export default {
     return {
       u_name: "",
       u_password: "",
+      loginFail: false,
     };
   },
   components: {
@@ -39,20 +41,26 @@ export default {
         u_name: this.u_name,
         u_password: this.u_password,
       };
-      const res = await fetch("api/users/login", {
+      const response = await fetch("api/users/login", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
         },
         body: JSON.stringify(data),
       });
-      const result = await res.json(res);
-      console.log(result);
-      // if (result.statusCode === "10000") {
-      // this.$router.push("Dashboard");
-      // }
-      // if(result.data)
-
+      if (response.status == 200) {
+        const result = await response.json(response);
+        console.log(result);
+        console.log(result.data.token);
+        if (result.statusCode === "10000") {
+          localStorage.setItem("u_id", JSON.stringify(result.data.u_id));
+          localStorage.setItem("jwtToken", JSON.stringify(result.data.token));
+          this.$router.push("Dashboard");
+        }
+      } else {
+        // TODO : Need to write a error component.
+        this.loginFail = true
+      }
     },
   },
 };

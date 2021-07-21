@@ -9,6 +9,7 @@ import { IBill, ICreateBill, isBill, IUpdateBill } from '../../contracts/IBills'
 import billsService from '../../services/bills/billsService';
 import { NoDataError, NotFoundError, BadRequestError } from '../../core/ApiError';
 import { isNull, isUndefined } from 'lodash';
+import authentication from '../../lib/authorization';
 
 const router = Router();
 
@@ -52,7 +53,7 @@ router.get('/:u_name', asyncHandler(async (req: Request, res: Response, next: Ne
 }));
 
 //Creates a new record in DB 
-router.post('/signup', asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+router.post('/signup', authentication, asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     try {
         let user_service = new userService();
         const newUser: IUser[] = await user_service.createuser(req.body.u_name, req.body.u_password);
@@ -64,7 +65,7 @@ router.post('/signup', asyncHandler(async (req: Request, res: Response, next: Ne
 }))
 
 // updates user password in DB
-router.put('/:u_id', asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+router.put('/:u_id', authentication, asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     try {
         let user_service = new userService();
         const result: IUser[] = await user_service.updatepassword(req.body.u_name, req.body.u_password);
@@ -82,7 +83,7 @@ router.put('/:u_id', asyncHandler(async (req: Request, res: Response, next: Next
 }));
 
 //Deletes a user in DB 
-router.delete('/:u_id', asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+router.delete('/:u_id', authentication, asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     try {
         let user_service = new userService();
         const result: IUser[] = await user_service.deletuser(req.body.u_name);
