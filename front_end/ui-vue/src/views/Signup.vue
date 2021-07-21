@@ -1,26 +1,86 @@
 <template>
-  <div>
-    UserName :
+  <div class="container">
+    <h1>Creating A New Account</h1>
+    <br />
+    New UserName
+    <br />
     <input v-model="u_name" type="text" id="u_name" placeholder="User Name" />
     <br />
-    Password :
+    <p v-if="validuser">Please Enter a Valid User Name</p>
+    Password
+    <br />
     <input
-      v-model="u_password"
+      v-model="u_pwd"
       type="password"
-      id="u_password"
+      id="u_password1"
       placeholder="Password"
     />
+    <br />
+    Re-Enter Password
+    <br />
+    <input
+      v-model="u_re_pwd"
+      type="password"
+      id="u_password2"
+      placeholder="Re-Enter Password"
+    />
+    <p v-if="wrongpwd">Password are not same</p>
+    <p v-if="pwdlength">Password is weak</p>
     <Button @click="signup" title="SignUp" color="black" />
+    <router-link to="/">
+      <Button title="Cancel" color="red" />
+    </router-link>
+    <router-link to="/login" v-if="usercreated">I</router-link>
   </div>
 </template>
 <script>
 import Button from "../components/Button.vue";
 export default {
   name: "Signup",
+  data() {
+    return {
+      u_name: "",
+      u_pwd: "",
+      u_re_pwd: "",
+      wrongpwd: false,
+      validuser: false,
+      pwdlength: false,
+      usercreated: false,
+    };
+  },
   methods: {
-    signup() {
-      // TODO: Need to rewrite this.
-      this.$emit("signup");
+    async signup() {
+      // if (this.u_pwd != this.u_re_pwd) {
+      //   this.wrongpwd = true;
+      //   return;
+      // }
+      // if (this.u_name == "" || this.u_pwd == "") {
+      //   this.validuser = true;
+      //   return;
+      // }
+      // if (this.u_pwd.length <= 5) {
+      //   this.pwdlength = true;
+      //   return;
+      // }
+      this.pwdlength = false;
+      this.wrongpwd = false;
+      this.validuser = false;
+      const data = {
+        u_name: this.u_name.trim(),
+        u_password: this.u_pwd.trim(),
+      };
+      const res = await fetch("api/users/signup", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      const result = await res.json();
+      console.log(res.status);
+      if (res.status === 200) {
+        this.$router.push("login");
+      }
     },
   },
   components: {

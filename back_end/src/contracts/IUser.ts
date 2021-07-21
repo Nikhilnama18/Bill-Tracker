@@ -4,3 +4,8 @@ export interface IUser {
     u_password: string,
     isdeleted: boolean
 }
+export interface ILoginResponse {
+    u_id: number,
+    auth: boolean,
+    token: string
+}

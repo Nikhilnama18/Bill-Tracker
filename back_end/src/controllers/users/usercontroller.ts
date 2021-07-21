@@ -19,12 +19,7 @@ router.post('/login', asyncHandler(async (req: Request, res: Response, next: Nex
     try {
         let user_service = new userService();
         let result = await user_service.login(req.body.u_name, req.body.u_password);
-        if (result == true) {
-            new SuccessResponse('Login success', result).send(res);
-        }
-        else {
-            new NotFoundResponse('Auth Failed').send(res);
-        }
+        new SuccessResponse('Login success', result).send(res);
     }
     catch (error) {
         throw (error);
@@ -129,10 +124,10 @@ router.get('/:u_id/orgs', asyncHandler(async (req: Request, res: Response) => {
         const orgSer = new organizationService();
         const org: IOrganization[] = await orgSer.getOrganizationByUserId(req.params.u_id);
         // if (org.length > 0 && isOrganization(org[0])) {
-            new SuccessResponse('success', org).send(res);
-            // }
-            // else {
-            // new NotFoundResponse('No organizations found. Please check and try again.').send(res);
+        new SuccessResponse('success', org).send(res);
+        // }
+        // else {
+        // new NotFoundResponse('No organizations found. Please check and try again.').send(res);
         // }
     } catch (error) {
         console.log(`Error for ${req.url} @ ${req.method} :${error}`)
