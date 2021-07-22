@@ -61,7 +61,7 @@ router.post('/signup', asyncHandler(async (req: Request, res: Response, next: Ne
             u_password: req.body.u_password,
             u_org_name: req.body.u_org_name,
             u_org_gst: req.body.u_org_gst,
-            u_org_location: req.body.u_org_location,
+            u_org_address: req.body.u_org_address,
             isdeleted: false
         }
         const createdUser: IUser[] = await user_service.createuser(newUser);

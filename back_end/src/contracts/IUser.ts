@@ -4,7 +4,7 @@ export interface IUser {
     u_password: string,
     u_org_name: string,
     u_org_gst: string,
-    u_org_location: string,
+    u_org_address: string,
     isdeleted: boolean
 }
 
@@ -13,7 +13,7 @@ export interface ICreateUser {
     u_password: string,
     u_org_name: string,
     u_org_gst: string,
-    u_org_location: string,
+    u_org_address: string,
     isdeleted: boolean
 }
 export interface ILoginResponse {

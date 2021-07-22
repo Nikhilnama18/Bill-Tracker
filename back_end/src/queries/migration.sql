@@ -16,7 +16,7 @@ CREATE TABLE public.userdetails (
 	u_password varchar NOT NULL,
     u_org_name varchar NOT NULL,
     u_org_gst varchar NOT NULL,
-    u_org_location varchar NOT NULL,
+    u_org_address varchar NOT NULL,
 	isdeleted bool NOT NULL DEFAULT false,
     c_date timestamp DEFAULT now(),
     u_date timestamp DEFAULT NULL,

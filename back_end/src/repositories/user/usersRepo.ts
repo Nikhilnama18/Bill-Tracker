@@ -27,7 +27,7 @@ class userRepositry {
 
     async createUser(newUser: ICreateUser): Promise<IUser[]> {
         return (await client.query(createuser_Q,
-            [newUser.u_name, newUser.u_password, newUser.u_org_name, newUser.u_org_gst, newUser.u_org_location, newUser.isdeleted])).rows;
+            [newUser.u_name, newUser.u_password, newUser.u_org_name, newUser.u_org_gst, newUser.u_org_address, newUser.isdeleted])).rows;
     }
 
     async updatePassword(u_name: string, new_password: string) {
