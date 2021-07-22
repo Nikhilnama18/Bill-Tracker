@@ -20,9 +20,10 @@ AND
 
 export const createuser_Q = `
 INSERT INTO
-    userdetails (u_name, u_password)
+    userdetails (u_name, u_password, u_org_name, u_org_gst, u_org_address, isdeleted)
 VALUES 
-    ($1, $2) `;
+    ($1, $2, $3, $4, $5, $6)
+RETURNING u_name, u_org_name, u_org_gst, u_org_address`;
 
 export const upadatePassword_Q = `
 UPDATE

@@ -24,8 +24,34 @@
       id="u_password2"
       placeholder="Re-Enter Password"
     />
+    <br />
     <p v-if="wrongpwd">Password are not same</p>
     <p v-if="pwdlength">Password is weak</p>
+    Your Organization Name
+    <br />
+    <input
+      v-model="u_org_name"
+      type="text"
+      id="u_org_name"
+      placeholder="Organization Name"
+    />
+    <br />
+    Your Organization GSTIN:
+    <br />
+    <input
+      v-model="u_org_gst"
+      type="text"
+      id="u_org_gst"
+      placeholder="GSTIN Number"
+    /><br />
+    You Organization Address
+    <br />
+    <input
+      v-model="u_org_address"
+      type="text"
+      id="u_org_address"
+      placeholder="Organization Address"
+    />
     <Button @click="signup" title="SignUp" color="black" />
     <router-link to="/">
       <Button title="Cancel" color="red" />
@@ -42,6 +68,9 @@ export default {
       u_name: "",
       u_pwd: "",
       u_re_pwd: "",
+      u_org_name: "",
+      u_org_gst: "",
+      u_org_address: "",
       wrongpwd: false,
       validuser: false,
       pwdlength: false,
@@ -68,6 +97,9 @@ export default {
       const data = {
         u_name: this.u_name.trim(),
         u_password: this.u_pwd.trim(),
+        u_org_name: this.u_org_name.trim(),
+        u_org_gst: this.u_org_gst.trim(),
+        u_org_address: this.u_org_address.trim(),
       };
       const res = await fetch("api/users/signup", {
         method: "POST",

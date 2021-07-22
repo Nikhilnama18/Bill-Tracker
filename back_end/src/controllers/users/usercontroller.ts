@@ -3,7 +3,7 @@ import { BadRequestResponse, NotFoundResponse, SuccessResponse } from '../../cor
 import asyncHandler from '../../core/asyncHandler';
 import { ICreateOrganization, IOrganization, isOrganization, IUpdateOrganization } from '../../contracts/IOrganization';
 import organizationService from '../../services/organizations/organizationsService';
-import { IUser } from '../../contracts/IUser';
+import { ICreateUser, IUser } from '../../contracts/IUser';
 import userService from '../../services/users/usersService';
 import { IBill, ICreateBill, isBill, IUpdateBill } from '../../contracts/IBills';
 import billsService from '../../services/bills/billsService';
@@ -56,8 +56,16 @@ router.get('/:u_name', asyncHandler(async (req: Request, res: Response, next: Ne
 router.post('/signup', asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     try {
         let user_service = new userService();
-        const newUser: IUser[] = await user_service.createuser(req.body.u_name, req.body.u_password);
-        new SuccessResponse('User Created', newUser).send(res);
+        const newUser: ICreateUser = {
+            u_name: req.body.u_name,
+            u_password: req.body.u_password,
+            u_org_name: req.body.u_org_name,
+            u_org_gst: req.body.u_org_gst,
+            u_org_address: req.body.u_org_address,
+            isdeleted: false
+        }
+        const createdUser: IUser[] = await user_service.createuser(newUser);
+        new SuccessResponse('User Created', createdUser).send(res);
     }
     catch (error) {
         throw error
