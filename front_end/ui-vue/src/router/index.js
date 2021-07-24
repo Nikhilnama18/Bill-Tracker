@@ -4,6 +4,7 @@ import Home from '../views/Home.vue';
 import Signup from '../views/Signup.vue';
 import Login from '../views/Login.vue';
 import Dashboard from '../views/Dashboard.vue';
+import Bills from '../views/Bills.vue';
 
 const routes = [
     {
@@ -26,6 +27,11 @@ const routes = [
         name: 'Dashboard',
         component: Dashboard,
     },
+    {
+        path: '/bills',
+        name: 'Bills',
+        component: Bills
+    }
 ]
 
 const router = createRouter({
@@ -33,4 +39,13 @@ const router = createRouter({
     routes
 })
 
+// router.beforeEach((to, from, next) => {
+//     console.log(to.name, from.name)
+//     if (to.name === 'Login' // Going to login page
+//         && localStorage.getItem('jwtToken') !== null // But user already logged in.
+//     ) {
+//         next({ name: 'Dashboard' }) // Send him to dashboard.
+//     }
+//     else next()
+// })
 export default router;

@@ -1,5 +1,6 @@
 <template>
   <div class="containers">
+    <Button @click="logout" title="Logout" color="red" />
     <h1>Organisations</h1>
     <Button @click="addorg" title="Add Organisation" color="green" />
     <Organisations v-if="logged" :Orgs="Orgs" />
@@ -26,6 +27,12 @@ export default {
     Organisations,
   },
   methods: {
+    logout() {
+      localStorage.removeItem("u_id");
+      localStorage.removeItem("jwtToken");
+      this.$router.push({ name: "Login" });
+    },
+
     addorg() {
       console.log("Entred");
     },

@@ -18,6 +18,7 @@ export default {
   },
 };
 </script>
+
 <style scope>
 .fas {
   color: rgb(0, 38, 255);
@@ -28,12 +29,5 @@ export default {
   padding: 10px 20px;
   cursor: pointer;
 }
-.task.reminder {
-  border-left: 5px solid green;
-}
-.task h3 {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+
 </style>
