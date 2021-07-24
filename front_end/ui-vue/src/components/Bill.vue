@@ -1,5 +1,8 @@
 <template>
   <div class="org">
+    <button style="font-size: 120%;" class="delete-button" @click="$emit('delete-bill', bill.b_id)">
+      <i class="fa fa-trash " aria-hidden="true"></i>
+    </button>
     <label> Org ID : </label>
     {{ bill.o_id }}
     <p></p>
@@ -23,13 +26,11 @@ export default {
   props: {
     bill: Object,
   },
+  emits: ["delete-bill"],
 };
 </script>
 
 <style scope>
-.fas {
-  color: rgb(0, 38, 255);
-}
 .bill {
   background: #f4f4f4;
   margin: 5px;
@@ -40,5 +41,16 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.delete-button {
+  position: absolute;
+  left: 97%;
+  cursor: pointer;
+  font: 15px/1.4 "Poppins", sans-serif;
+  color: black;
+  transition: all 0.3s linear;
+  outline: none;
+
 }
 </style>

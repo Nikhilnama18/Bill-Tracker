@@ -29,7 +29,7 @@
 
     Total Bills : {{ bills.length }}
     <div :key="bill.o_id" v-for="bill in bills">
-      <Bill :bill="bill"></Bill>
+      <Bill @delete-bill="deleteBill" :bill="bill"></Bill>
     </div>
   </div>
 </template>
@@ -54,14 +54,8 @@ export default {
   components: { Bill, Button },
   methods: {
     async fetchBills() {
-      this.u_id = localStorage.getItem("u_id");
-      this.jwtToken = localStorage.getItem("jwtToken");
-      this.o_id = localStorage.getItem("org_id") || this.$route.params.o_id;
-      if (!this.o_id) {
-        this.$router.push("Dashboard");
-      }
       const response = await fetch(
-        `api/users/${this.u_id}/orgs/${this.o_id}/bills`,
+        `api/users/${this.getUserId()}/orgs/${this.getOrgId()}/bills`,
         {
           method: "GET",
           headers: {
@@ -70,10 +64,8 @@ export default {
           },
         }
       );
-      console.log(response);
       if (response.status === 200) {
         let result = await response.json();
-        console.log("fetched bill are :", result.data);
         this.bills = result.data;
       }
     },
@@ -81,22 +73,8 @@ export default {
     async createBill(event) {
       event.preventDefault();
 
-      this.u_id = localStorage.getItem("u_id");
-      this.jwtToken = localStorage.getItem("jwtToken");
-      this.o_id = localStorage.getItem("org_id") || this.$route.params.o_id;
-
-      if (!this.o_id) {
-        console.log("Sending to Dashboard from ListBills.vue");
-        this.$router.push("Dashboard");
-      }
-
-      if (!this.u_id || !this.jwtToken) {
-        console.log("Sending to Login from ListBills.vue");
-        this.$router.push("Login");
-      }
-
       const response = await fetch(
-        `api/users/${this.u_id}/orgs/${this.o_id}/bills`,
+        `api/users/${this.getUserId()}/orgs/${this.getOrgId()}/bills`,
         {
           method: "POST",
           headers: {
@@ -113,12 +91,9 @@ export default {
       );
       if (response.status == 200) {
         let result = await response.json();
-        console.log("result: :", result);
         if (result.statusCode == "10000") {
-          console.log("create res:", result);
           this.bills = [...this.bills, result.data[0]];
-          this.showAddBill = false
-          
+          this.showAddBill = false;
         } else {
           alert("Unable to create bill.");
         }
@@ -126,9 +101,60 @@ export default {
         alert("Unable to create bill.");
       }
     },
+
+    async deleteBill(b_id) {
+      if (
+        confirm(`Are you sure , you want to delete the bill with id : ${b_id}`)
+      ) {
+        const response = await fetch(
+          `api/users/${this.getUserId()}/orgs/${this.getOrgId()}/bills/${b_id}`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-type": "application/json",
+              authorization: `Bearer ${this.getJwtToken()}`,
+            },
+          }
+        );
+
+        if (response.status == 200) {
+          let result = await response.json();
+          if (result.statusCode == "10000") {
+            this.bills = this.bills.filter((bill) => bill.b_id != b_id);
+          } else {
+            alert("Unable to delete bill.");
+          }
+        } else {
+          alert("Unable to delete bill.");
+        }
+      }
+    },
+
+    getUserId() {
+      const u_id = localStorage.getItem("u_id");
+      if (!u_id) {
+        this.$router.push("Login");
+      }
+      return u_id;
+    },
+
+    getJwtToken() {
+      const jwtToken = localStorage.getItem("jwtToken");
+      if (!jwtToken) {
+        this.$router.push("Login");
+      }
+      return jwtToken;
+    },
+
+    getOrgId() {
+      const o_id = localStorage.getItem("org_id") || this.$route.params.o_id;
+      if (!o_id) {
+        this.$router.push("Dashboard");
+      }
+      return o_id;
+    },
   },
   created() {
-    console.log("Comp Listbills created");
     this.fetchBills();
   },
 };
