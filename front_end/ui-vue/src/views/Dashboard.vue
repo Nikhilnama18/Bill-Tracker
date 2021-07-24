@@ -30,6 +30,7 @@ export default {
     logout() {
       localStorage.removeItem("u_id");
       localStorage.removeItem("jwtToken");
+      localStorage.removeItem("org_id");
       this.$router.push({ name: "Login" });
     },
 
@@ -52,10 +53,20 @@ export default {
         this.Orgs = result.data;
       }
     },
+    getUserId() {
+      return localStorage.getItem("u_id");
+    },
+
+    getJwtToken() {
+      return localStorage.getItem("jwtToken");
+    },
   },
   created() {
-    this.fetchorg();
     console.log("Dashboard comp created.");
+    if (!this.getUserId() || !this.getJwtToken()) {
+      this.$router.push("Login");
+    }
+    this.fetchorg();
   },
 };
 </script>

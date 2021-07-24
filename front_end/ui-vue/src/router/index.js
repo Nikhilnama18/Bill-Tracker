@@ -31,7 +31,12 @@ const routes = [
         path: '/bills',
         name: 'Bills',
         component: Bills
-    }
+    },
+    {
+        path: '/*',
+        name: 'Error',
+        component: { template: `<p> Please visit Home.</p>` }
+    },
 ]
 
 const router = createRouter({

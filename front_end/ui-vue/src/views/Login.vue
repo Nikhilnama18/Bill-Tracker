@@ -12,6 +12,7 @@
         placeholder="Password"
       />
       <p v-if="loginFail">Username or password is wrong.</p>
+      <p v-if="loginFormEmpty">Please fill Username and password.</p>
       <Button @click="signin" title="SignIn" color="black" />
       <router-link to="/">
         <Button title="Cancel" color="red" />
@@ -30,6 +31,7 @@ export default {
       u_name: "",
       u_password: "",
       loginFail: false,
+      loginFormEmpty: false,
     };
   },
   components: {
@@ -37,10 +39,15 @@ export default {
   },
   methods: {
     async signin() {
+      if (this.u_name.trim() === "" || this.u_password.trim() === "") {
+        this.loginFormEmpty = true;
+        return;
+      }
       const data = {
         u_name: this.u_name,
         u_password: this.u_password,
       };
+      console.log("In signin :", JSON.stringify(data));
       const response = await fetch("api/users/login", {
         method: "POST",
         headers: {
@@ -59,9 +66,22 @@ export default {
         }
       } else {
         // TODO : Need to write a error component.
-        this.loginFail = true
+        this.loginFail = true;
       }
     },
+    getUserId() {
+      return localStorage.getItem("u_id");
+    },
+
+    getJwtToken() {
+      return localStorage.getItem("jwtToken");
+    },
+  },
+  created() {
+    if (this.getUserId() && this.getJwtToken()) {
+      // User id and jwt token are present.
+      this.$router.push("Dashboard");
+    }
   },
 };
 </script>
