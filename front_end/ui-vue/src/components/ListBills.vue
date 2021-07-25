@@ -27,7 +27,9 @@
       </form>
     </div>
 
-    Total Bills : {{ bills.length }}
+    <p>Total Bills : {{ bills.length }}</p>
+    <p>Total Ammount : {{ totalAmmount }} &#x20B9;</p>
+    <p>Total Due Ammount :{{ totalDueAmmount }} &#x20B9;</p>
     <div :key="bill.o_id" v-for="bill in bills">
       <Bill @delete-bill="deleteBill" :bill="bill"></Bill>
     </div>
@@ -152,6 +154,24 @@ export default {
         this.$router.push("Dashboard");
       }
       return o_id;
+    },
+
+    numberWithCommas(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    },
+  },
+  computed: {
+    totalAmmount() {
+      const sumAmmount = this.bills.reduce((sum, bill) => {
+        return sum + bill.ammount;
+      }, 0);
+      return this.numberWithCommas(sumAmmount);
+    },
+    totalDueAmmount() {
+      const sumDueAmmount = this.bills.reduce((sum, bill) => {
+        return sum + bill.due_ammount;
+      }, 0);
+      return this.numberWithCommas(sumDueAmmount);
     },
   },
   created() {

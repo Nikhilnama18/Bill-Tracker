@@ -13,6 +13,9 @@
       />
       <p v-if="loginFail">Username or password is wrong.</p>
       <p v-if="loginFormEmpty">Please fill Username and password.</p>
+      <p v-if="connectionIssue">
+        Cannot connect to our service. Please try again in few moments.
+      </p>
       <Button @click="signin" title="SignIn" color="black" />
       <router-link to="/">
         <Button title="Cancel" color="red" />
@@ -32,6 +35,7 @@ export default {
       u_password: "",
       loginFail: false,
       loginFormEmpty: false,
+      connectionIssue: false,
     };
   },
   components: {
@@ -39,6 +43,11 @@ export default {
   },
   methods: {
     async signin() {
+      //Reset messages .
+      this.loginFail = false;
+      this.loginFormEmpty = false;
+      this.connectionIssue = false;
+
       if (this.u_name.trim() === "" || this.u_password.trim() === "") {
         this.loginFormEmpty = true;
         return;
@@ -64,6 +73,8 @@ export default {
           localStorage.setItem("jwtToken", JSON.stringify(result.data.token));
           this.$router.push("Dashboard");
         }
+      } else if (response.status == 500) {
+        this.connectionIssue = true;
       } else {
         // TODO : Need to write a error component.
         this.loginFail = true;
