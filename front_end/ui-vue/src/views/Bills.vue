@@ -1,6 +1,8 @@
 <template>
-  <ListBills :org_id="org_id"></ListBills>
-  
+  <div>
+    <h1 class="org-name">Organisation : {{ getOrgName() }}</h1>
+    <ListBills :org_id="org_id"></ListBills>
+  </div>
 </template>
 
 <script>
@@ -16,5 +18,17 @@ export default {
   created() {
     console.log(`Bills vue created ${this.$route.params.o_id}`);
   },
+  methods: {
+    getOrgName() {
+      return this.$route.params.o_name || localStorage.getItem("org_name");
+    },
+  },
 };
 </script>
+
+<style scoped>
+.org-name {
+  position: sticky;
+  top:0%
+}
+</style>

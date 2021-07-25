@@ -1,26 +1,41 @@
 <template>
   <div class="containers">
-    <div class="userDetails">
-      UserName:
-      <input v-model="u_name" type="text" id="u_name" placeholder="User Name" />
+    <form class="userDetails">
+      <label> UserName:</label>
+      <input
+        v-model="u_name"
+        type="text"
+        id="u_name"
+        placeholder="User Name"
+        required
+      />
       <br />
-      Password :
+      <label>Password :</label>
       <input
         v-model="u_password"
         type="password"
         id="u_password"
         placeholder="Password"
+        required
       />
+      <br />
       <p v-if="loginFail">Username or password is wrong.</p>
       <p v-if="loginFormEmpty">Please fill Username and password.</p>
       <p v-if="connectionIssue">
         Cannot connect to our service. Please try again in few moments.
       </p>
-      <Button @click="signin" title="SignIn" color="black" />
+      <input
+        :disabled="!isLoginEnabled"
+        type="submit"
+        @click="signin"
+        value="Login"
+        :style="{ background: '#458eff' }"
+        class="btn"
+      />
       <router-link to="/">
         <Button title="Cancel" color="red" />
       </router-link>
-    </div>
+    </form>
   </div>
 </template>
 
@@ -41,8 +56,14 @@ export default {
   components: {
     Button,
   },
+  computed: {
+    isLoginEnabled() {
+      return this.u_name.trim().length > 1 && this.u_password.trim().length > 1;
+    },
+  },
   methods: {
-    async signin() {
+    async signin(event) {
+      event.preventDefault();
       //Reset messages .
       this.loginFail = false;
       this.loginFormEmpty = false;

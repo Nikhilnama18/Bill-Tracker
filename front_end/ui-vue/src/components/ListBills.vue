@@ -23,7 +23,14 @@
           placeholder="Bill Due Ammount"
           required
         />
-        <input type="submit" @click="createBill" />
+        <input
+          :disabled="!isLoginEnabled"
+          type="submit"
+          @click="createBill"
+          value="Add bill"
+          :style="{ background: '#458eff' }"
+          class="btn"
+        />
       </form>
     </div>
 

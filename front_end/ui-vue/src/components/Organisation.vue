@@ -15,8 +15,12 @@ export default {
   },
   methods: {
     renderBills() {
-      this.$router.push({ name: "Bills", params: { o_id: this.org.o_id } });
+      this.$router.push({
+        name: "Bills",
+        params: { o_id: this.org.o_id, o_name: this.org.o_name },
+      });
       localStorage.setItem("org_id", this.org.o_id);
+      localStorage.setItem("org_name", this.org.o_name);
     },
   },
 };
