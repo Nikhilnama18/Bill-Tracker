@@ -24,7 +24,6 @@
           required
         />
         <input
-          :disabled="!isLoginEnabled"
           type="submit"
           @click="createBill"
           value="Add bill"
@@ -38,7 +37,11 @@
     <p>Total Ammount : {{ totalAmmount }} &#x20B9;</p>
     <p>Total Due Ammount :{{ totalDueAmmount }} &#x20B9;</p>
     <div :key="bill.o_id" v-for="bill in bills">
-      <Bill @delete-bill="deleteBill" :bill="bill"></Bill>
+      <Bill
+        @delete-bill="deleteBill"
+        @update-bill="updateBill"
+        :bill="bill"
+      ></Bill>
     </div>
   </div>
 </template>
@@ -46,6 +49,7 @@
 <script>
 import Bill from "./Bill.vue";
 import Button from "../components/Button.vue";
+import AppVue from "../App.vue";
 
 export default {
   name: "ListBills",
@@ -139,6 +143,23 @@ export default {
       }
     },
 
+    updateBill(updated_bill) {
+      console.log(updated_bill);
+      const updatedBillIndex = this.bills.findIndex(
+        (bill) => bill.b_id == updated_bill.b_id
+      );
+      // Get a new object.
+      const toUpdateBill = { ...this.bills[updatedBillIndex] };
+      // Now remove the to update object.
+      this.bills = this.bills.filter((bill) => {
+        return bill.b_id != updated_bill.b_id;
+      });
+      toUpdateBill["ammount"] = parseInt(updated_bill.ammount);
+      toUpdateBill["due_ammount"] = parseInt(updated_bill.due_ammount);
+      this.bills.splice(updatedBillIndex, 0, { ...toUpdateBill });
+      console.table(this.bills);
+    },
+
     getUserId() {
       const u_id = localStorage.getItem("u_id");
       if (!u_id) {
@@ -175,6 +196,7 @@ export default {
       return this.numberWithCommas(sumAmmount);
     },
     totalDueAmmount() {
+      //   console.log("totalDueAmmount :", JSON.stringify(this.bills));
       const sumDueAmmount = this.bills.reduce((sum, bill) => {
         return sum + bill.due_ammount;
       }, 0);

@@ -1,5 +1,8 @@
 <template>
   <div>
+    <router-link to="/dashboard">
+      <Button title="Dashboard" color="purple" />
+    </router-link>
     <h1 class="org-name">Organisation : {{ getOrgName() }}</h1>
     <ListBills :org_id="org_id"></ListBills>
   </div>
@@ -7,6 +10,8 @@
 
 <script>
 import ListBills from "../components/ListBills.vue";
+import Button from "../components/Button.vue";
+
 export default {
   name: "Bills",
   data() {
@@ -14,7 +19,7 @@ export default {
       org_id: this.$route.params.o_id,
     };
   },
-  components: { ListBills },
+  components: { ListBills, Button },
   created() {
     console.log(`Bills vue created ${this.$route.params.o_id}`);
   },
@@ -29,6 +34,6 @@ export default {
 <style scoped>
 .org-name {
   position: sticky;
-  top:0%
+  top: 0%;
 }
 </style>
