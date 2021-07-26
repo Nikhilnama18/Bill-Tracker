@@ -1,22 +1,41 @@
 <template>
   <div class="containers">
-    <div class="userDetails">
-      UserName:
-      <input v-model="u_name" type="text" id="u_name" placeholder="User Name" />
+    <form class="userDetails">
+      <label> UserName:</label>
+      <input
+        v-model="u_name"
+        type="text"
+        id="u_name"
+        placeholder="User Name"
+        required
+      />
       <br />
-      Password :
+      <label>Password :</label>
       <input
         v-model="u_password"
         type="password"
         id="u_password"
         placeholder="Password"
+        required
       />
+      <br />
       <p v-if="loginFail">Username or password is wrong.</p>
-      <Button @click="signin" title="SignIn" color="black" />
+      <p v-if="loginFormEmpty">Please fill Username and password.</p>
+      <p v-if="connectionIssue">
+        Cannot connect to our service. Please try again in few moments.
+      </p>
+      <input
+        :disabled="!isLoginEnabled"
+        type="submit"
+        @click="signin"
+        value="Login"
+        :style="{ background: '#458eff' }"
+        class="btn"
+      />
       <router-link to="/">
         <Button title="Cancel" color="red" />
       </router-link>
-    </div>
+    </form>
   </div>
 </template>
 
@@ -30,17 +49,35 @@ export default {
       u_name: "",
       u_password: "",
       loginFail: false,
+      loginFormEmpty: false,
+      connectionIssue: false,
     };
   },
   components: {
     Button,
   },
+  computed: {
+    isLoginEnabled() {
+      return this.u_name.trim().length > 1 && this.u_password.trim().length > 1;
+    },
+  },
   methods: {
-    async signin() {
+    async signin(event) {
+      event.preventDefault();
+      //Reset messages .
+      this.loginFail = false;
+      this.loginFormEmpty = false;
+      this.connectionIssue = false;
+
+      if (this.u_name.trim() === "" || this.u_password.trim() === "") {
+        this.loginFormEmpty = true;
+        return;
+      }
       const data = {
         u_name: this.u_name,
         u_password: this.u_password,
       };
+      console.log("In signin :", JSON.stringify(data));
       const response = await fetch("api/users/login", {
         method: "POST",
         headers: {
@@ -57,11 +94,26 @@ export default {
           localStorage.setItem("jwtToken", JSON.stringify(result.data.token));
           this.$router.push("Dashboard");
         }
+      } else if (response.status == 500) {
+        this.connectionIssue = true;
       } else {
         // TODO : Need to write a error component.
-        this.loginFail = true
+        this.loginFail = true;
       }
     },
+    getUserId() {
+      return localStorage.getItem("u_id");
+    },
+
+    getJwtToken() {
+      return localStorage.getItem("jwtToken");
+    },
+  },
+  created() {
+    if (this.getUserId() && this.getJwtToken()) {
+      // User id and jwt token are present.
+      this.$router.push("Dashboard");
+    }
   },
 };
 </script>

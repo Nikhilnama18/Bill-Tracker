@@ -1,5 +1,6 @@
 <template>
   <div class="containers">
+    <Button @click="logout" title="Logout" color="red" />
     <h1>Organisations</h1>
     <Button @click="addorg" title="Add Organisation" color="green" />
     <Organisations v-if="logged" :Orgs="Orgs" />
@@ -26,6 +27,13 @@ export default {
     Organisations,
   },
   methods: {
+    logout() {
+      localStorage.removeItem("u_id");
+      localStorage.removeItem("jwtToken");
+      localStorage.removeItem("org_id");
+      this.$router.push({ name: "Login" });
+    },
+
     addorg() {
       console.log("Entred");
     },
@@ -45,10 +53,20 @@ export default {
         this.Orgs = result.data;
       }
     },
+    getUserId() {
+      return localStorage.getItem("u_id");
+    },
+
+    getJwtToken() {
+      return localStorage.getItem("jwtToken");
+    },
   },
   created() {
-    this.fetchorg();
     console.log("Dashboard comp created.");
+    if (!this.getUserId() || !this.getJwtToken()) {
+      this.$router.push("Login");
+    }
+    this.fetchorg();
   },
 };
 </script>
