@@ -1,8 +1,25 @@
 <template>
-  <div class="bill">
-    <div class="edit-button">
+  <div
+    class="bill"
+    :style="[
+      bill.due_ammount == 0
+        ? { background: 'LightGreen' }
+        : bill.due_ammount < bill.ammount / 2
+        ? { background: 'Lavender' }
+        : { background: 'Pink' },
+    ]"
+  >
+    <div class="bill-buttons">
       <button
-        style="font-size: 120%"
+        class="edit-button"
+        :style="[
+          bill.due_ammount == 0
+            ? { background: 'LightGreen' }
+            : bill.due_ammount < bill.ammount / 2
+            ? { background: 'Lavender' }
+            : { background: 'Pink' },
+          'font-size: 120%',
+        ]"
         @click="isUpdateClicked = !isUpdateClicked"
         alt="Edit Bill"
       >
@@ -13,7 +30,15 @@
       </button>
 
       <button
-        style="font-size: 120%"
+        class="delete-button"
+        :style="[
+          bill.due_ammount == 0
+            ? { background: 'LightGreen' }
+            : bill.due_ammount < bill.ammount / 2
+            ? { background: 'Lavender' }
+            : { background: 'Pink' },
+          'font-size: 120%',
+        ]"
         @click="$emit('delete-bill', bill.b_id)"
         alt="Delete Bill"
       >
@@ -56,8 +81,9 @@
     </div>
 
     <p></p>
-    <label> Bill Generated at : </label>
-    {{ bill.issue_timestamp }}
+    <label> Bill Added on : </label>
+    {{ new Date(bill.issue_timestamp).toDateString() }} @
+    {{ new Date(bill.issue_timestamp).toLocaleTimeString("en") }}
     <div v-show="isUpdateClicked">
       <Button title="Update" color="purple" @click="updateBill" />
     </div>
@@ -113,12 +139,15 @@ export default {
           let result = await response.json();
           if (result.statusCode == "10000") {
             this.isUpdateClicked = false;
-            // Update the bill in UI.
+
             this.$emit("update-bill", {
               ammount: parseInt(this.updateAmmount),
               due_ammount: parseInt(this.updateDueAmmount),
               b_id: this.bill.b_id,
             });
+            // Update the bill in UI.
+            this.bill.ammount = parseInt(this.updateAmmount);
+            this.bill.due_ammount = parseInt(this.updateDueAmmount);
           } else {
             alert("Unable to update bill.");
           }
@@ -159,25 +188,34 @@ export default {
 .bill {
   background: #f4f4f4;
   margin: 5px;
-  padding: 10px 20px;
+  overflow: hidden;
+  min-height: 100px;
+  padding: 20px;
+  border-radius: 10px;
 }
 
 /* .options-div {
   position: relative;
 } */
-/* .delete-button {
-  position: relative;
-  left: 99%;
-  cursor: pointer;
-  font: 15px/1.4 "Poppins", sans-serif;
-  color: black;
-  transition: all 0.3s linear;
-  outline: none;
-} */
 .edit-button {
   position: relative;
-  left: 97%;
+  margin-right: 10px;
+  overflow: hidden;
+  border-radius: 8px;
   cursor: pointer;
+  border: 0ch;
+}
+
+.delete-button {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 0ch;
+}
+.bill-buttons {
+  position: relative;
+  left: 97%;
   font: 15px/1.4 "Poppins", sans-serif;
   color: black;
   transition: all 0.3s linear;

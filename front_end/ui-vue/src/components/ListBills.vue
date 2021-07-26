@@ -145,19 +145,20 @@ export default {
 
     updateBill(updated_bill) {
       console.log(updated_bill);
-      const updatedBillIndex = this.bills.findIndex(
-        (bill) => bill.b_id == updated_bill.b_id
-      );
-      // Get a new object.
-      const toUpdateBill = { ...this.bills[updatedBillIndex] };
-      // Now remove the to update object.
-      this.bills = this.bills.filter((bill) => {
-        return bill.b_id != updated_bill.b_id;
-      });
-      toUpdateBill["ammount"] = parseInt(updated_bill.ammount);
-      toUpdateBill["due_ammount"] = parseInt(updated_bill.due_ammount);
-      this.bills.splice(updatedBillIndex, 0, { ...toUpdateBill });
-      console.table(this.bills);
+    //   No need to update here , updating just in the bill component is enough.
+    //   const updatedBillIndex = this.bills.findIndex(
+    //     (bill) => bill.b_id == updated_bill.b_id
+    //   );
+    //   // Get a new object.
+    //   const toUpdateBill = { ...this.bills[updatedBillIndex] };
+    //   // Now remove the to update object.
+    //   this.bills = this.bills.filter((bill) => {
+    //     return bill.b_id != updated_bill.b_id;
+    //   });
+    //   toUpdateBill["ammount"] = parseInt(updated_bill.ammount);
+    //   toUpdateBill["due_ammount"] = parseInt(updated_bill.due_ammount);
+    //   this.bills.splice(updatedBillIndex, 0, { ...toUpdateBill });
+    //   console.table(this.bills);
     },
 
     getUserId() {

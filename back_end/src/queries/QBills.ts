@@ -6,7 +6,8 @@ WHERE o_id = $1 AND b_id = $2`;
 export const getBills_Q =
     `SELECT * 
 FROM public.bills
-WHERE u_id = $1 AND o_id = $2`
+WHERE u_id = $1 AND o_id = $2
+ORDER BY c_date DESC`
 //Write query for creating a bill
 
 export const createBill_Q =
