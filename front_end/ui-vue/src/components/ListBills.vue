@@ -23,6 +23,15 @@
           placeholder="Bill Due Ammount"
           required
         />
+
+        <input
+          v-model="billTimestamp"
+          type="datetime-local"
+          name="billTimestamp"
+          id="billTimestamp"
+          required
+        />
+
         <input
           type="submit"
           @click="createBill"
@@ -51,7 +60,6 @@
 <script>
 import Bill from "./Bill.vue";
 import Button from "../components/Button.vue";
-import AppVue from "../App.vue";
 
 export default {
   name: "ListBills",
@@ -64,6 +72,7 @@ export default {
       showAddBill: false,
       dueAmmount: 0,
       ammount: 0,
+      billTimestamp: new Date(),
     };
   },
   components: { Bill, Button },
@@ -100,7 +109,7 @@ export default {
             o_id: parseInt(this.getOrgId()),
             ammount: parseInt(this.ammount),
             due_ammount: parseInt(this.dueAmmount),
-            issue_timestamp: new Date().toUTCString(),
+            issue_timestamp: this.billTimestamp,
           }),
         }
       );
@@ -221,7 +230,9 @@ export default {
         }, 0);
 
         return openBillsSum > 0
-          ? ((parseInt(sumDueAmmount) / parseInt(openBillsSum)) * 100).toFixed(2)
+          ? ((parseInt(sumDueAmmount) / parseInt(openBillsSum)) * 100).toFixed(
+              2
+            )
           : 0;
       }
       return 0;
