@@ -1,5 +1,6 @@
 <template>
   <div class="containers">
+    <Button @click="logout" title="Logout" color="red" />
     <h1>Organisations</h1>
     <Button @click="addorg" title="Add Organisation" color="green" />
     <AddOrg @refresh="pushOrg" @cancel="cancel" v-if="addOrg" />
@@ -33,6 +34,13 @@ export default {
     AddOrg,
   },
   methods: {
+    logout() {
+      localStorage.removeItem("u_id");
+      localStorage.removeItem("jwtToken");
+      localStorage.removeItem("org_id");
+      this.$router.push({ name: "Login" });
+    },
+
     addorg() {
       this.addOrg = !this.addOrg;
     },
@@ -55,14 +63,24 @@ export default {
         let result = await response.json();
         this.logged = true;
         this.Orgs = result.data;
-        console.log(result.data);
       }
     },
     pushOrg(data) {
       this.Orgs.push(data[0]);
     },
+    getUserId() {
+      return localStorage.getItem("u_id");
+    },
+
+    getJwtToken() {
+      return localStorage.getItem("jwtToken");
+    },
   },
   created() {
+    console.log("Dashboard comp created.");
+    if (!this.getUserId() || !this.getJwtToken()) {
+      this.$router.push("Login");
+    }
     this.fetchorg();
   },
 };

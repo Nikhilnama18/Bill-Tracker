@@ -1,25 +1,42 @@
 <template>
-  <div class="org" @click="bills">
+  <div class="org" @click="renderBills">
     <h2>
       {{ org.o_name }}
       {{ org.o_location }}
       {{ org.o_gst }}
     </h2>
+    <Button @click="deleteOrg" color="red" title="Delete" />
   </div>
 </template>
 <script>
+import Button from "./Button.vue";
 export default {
   name: "Organisation",
+  components: {
+    Button,
+  },
   props: {
     org: Object,
   },
-  methods:{
-    bills(){
-      console.log('bills')
-    }
-  }
+  methods: {
+    renderBills() {
+      this.$router.push({
+        name: "Bills",
+        params: { o_id: this.org.o_id, o_name: this.org.o_name },
+      });
+      localStorage.setItem("org_id", this.org.o_id);
+      localStorage.setItem("org_name", this.org.o_name);
+    },
+    deleteOrg() {
+      if(confirm('Are You sure'))
+      {
+        console.log('Delete');
+      }
+    },
+  },
 };
 </script>
+
 <style scope>
 .fas {
   color: rgb(0, 38, 255);
@@ -29,13 +46,5 @@ export default {
   margin: 5px;
   padding: 10px 20px;
   cursor: pointer;
-}
-.task.reminder {
-  border-left: 5px solid green;
-}
-.task h3 {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 }
 </style>
