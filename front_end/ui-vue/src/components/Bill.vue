@@ -45,7 +45,7 @@
         <i class="fa fa-trash" aria-hidden="true"></i>
       </button>
     </div>
-
+    <h3 v-show="bill.due_ammount == 0"> Bill Closed</h3>
     <label> Org ID : </label>
     {{ bill.o_id }}
     <p></p>
