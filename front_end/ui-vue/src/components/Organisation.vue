@@ -5,11 +5,16 @@
       {{ org.o_location }}
       {{ org.o_gst }}
     </h2>
+    <Button @click="deleteOrg" color="red" title="Delete" />
   </div>
 </template>
 <script>
+import Button from "./Button.vue";
 export default {
   name: "Organisation",
+  components: {
+    Button,
+  },
   props: {
     org: Object,
   },
@@ -21,6 +26,12 @@ export default {
       });
       localStorage.setItem("org_id", this.org.o_id);
       localStorage.setItem("org_name", this.org.o_name);
+    },
+    deleteOrg() {
+      if(confirm('Are You sure'))
+      {
+        console.log('Delete');
+      }
     },
   },
 };

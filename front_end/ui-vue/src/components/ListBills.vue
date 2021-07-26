@@ -94,8 +94,8 @@ export default {
             "Content-type": "application/json",
           },
           body: JSON.stringify({
-            u_id: parseInt(this.u_id),
-            o_id: parseInt(this.o_id),
+            u_id: parseInt(this.getUserId()),
+            o_id: parseInt(this.getOrgId()),
             ammount: parseInt(this.ammount),
             due_ammount: parseInt(this.dueAmmount),
             issue_timestamp: new Date().toUTCString(),

@@ -70,8 +70,8 @@ body {
   font-family: "Poppins", sans-serif;
 }
 .container {
-  max-width: 500px;
-  margin: 30px auto;
+  max-width: 700px;
+  margin: 10px ;
   overflow: auto;
   min-height: 300px;
   border: 1px solid steelblue;
