@@ -87,8 +87,8 @@ export default {
       });
       if (response.status == 200) {
         const result = await response.json(response);
-        console.log(result);
-        console.log(result.data.token);
+        // console.log(result);
+        // console.log(result.data.token);
         if (result.statusCode === "10000") {
           localStorage.setItem("u_id", JSON.stringify(result.data.u_id));
           localStorage.setItem("jwtToken", JSON.stringify(result.data.token));
