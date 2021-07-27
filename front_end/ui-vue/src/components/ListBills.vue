@@ -23,6 +23,15 @@
           placeholder="Bill Due Ammount"
           required
         />
+
+        <input
+          v-model="billTimestamp"
+          type="datetime-local"
+          name="billTimestamp"
+          id="billTimestamp"
+          required
+        />
+
         <input
           type="submit"
           @click="createBill"
@@ -35,7 +44,9 @@
 
     <p>Total Bills : {{ bills.length }}</p>
     <p>Total Ammount : {{ totalAmmount }} &#x20B9;</p>
-    <p>Total Due Ammount :{{ totalDueAmmount }} &#x20B9;</p>
+    <p>Total Due Ammount : {{ totalDueAmmount }} &#x20B9;</p>
+    <p>Open bills Due : {{ openDuePercent }} %</p>
+    <p>Open bills Paid : {{ 100 - openDuePercent }} %</p>
     <div :key="bill.o_id" v-for="bill in bills">
       <Bill
         @delete-bill="deleteBill"
@@ -49,7 +60,6 @@
 <script>
 import Bill from "./Bill.vue";
 import Button from "../components/Button.vue";
-import AppVue from "../App.vue";
 
 export default {
   name: "ListBills",
@@ -62,6 +72,7 @@ export default {
       showAddBill: false,
       dueAmmount: 0,
       ammount: 0,
+      billTimestamp: new Date(),
     };
   },
   components: { Bill, Button },
@@ -98,14 +109,14 @@ export default {
             o_id: parseInt(this.getOrgId()),
             ammount: parseInt(this.ammount),
             due_ammount: parseInt(this.dueAmmount),
-            issue_timestamp: new Date().toUTCString(),
+            issue_timestamp: this.billTimestamp,
           }),
         }
       );
       if (response.status == 200) {
         let result = await response.json();
         if (result.statusCode == "10000") {
-          this.bills = [...this.bills, result.data[0]];
+          this.bills = [result.data[0], ...this.bills];
           this.showAddBill = false;
         } else {
           alert("Unable to create bill.");
@@ -145,20 +156,20 @@ export default {
 
     updateBill(updated_bill) {
       console.log(updated_bill);
-    //   No need to update here , updating just in the bill component is enough.
-    //   const updatedBillIndex = this.bills.findIndex(
-    //     (bill) => bill.b_id == updated_bill.b_id
-    //   );
-    //   // Get a new object.
-    //   const toUpdateBill = { ...this.bills[updatedBillIndex] };
-    //   // Now remove the to update object.
-    //   this.bills = this.bills.filter((bill) => {
-    //     return bill.b_id != updated_bill.b_id;
-    //   });
-    //   toUpdateBill["ammount"] = parseInt(updated_bill.ammount);
-    //   toUpdateBill["due_ammount"] = parseInt(updated_bill.due_ammount);
-    //   this.bills.splice(updatedBillIndex, 0, { ...toUpdateBill });
-    //   console.table(this.bills);
+      //   No need to update here , updating just in the bill component is enough.
+      //   const updatedBillIndex = this.bills.findIndex(
+      //     (bill) => bill.b_id == updated_bill.b_id
+      //   );
+      //   // Get a new object.
+      //   const toUpdateBill = { ...this.bills[updatedBillIndex] };
+      //   // Now remove the to update object.
+      //   this.bills = this.bills.filter((bill) => {
+      //     return bill.b_id != updated_bill.b_id;
+      //   });
+      //   toUpdateBill["ammount"] = parseInt(updated_bill.ammount);
+      //   toUpdateBill["due_ammount"] = parseInt(updated_bill.due_ammount);
+      //   this.bills.splice(updatedBillIndex, 0, { ...toUpdateBill });
+      //   console.table(this.bills);
     },
 
     getUserId() {
@@ -196,12 +207,35 @@ export default {
       }, 0);
       return this.numberWithCommas(sumAmmount);
     },
+
     totalDueAmmount() {
       //   console.log("totalDueAmmount :", JSON.stringify(this.bills));
       const sumDueAmmount = this.bills.reduce((sum, bill) => {
         return sum + bill.due_ammount;
       }, 0);
       return this.numberWithCommas(sumDueAmmount);
+    },
+
+    openDuePercent() {
+      const openBills = this.bills.filter((bill) => {
+        return bill.due_ammount != 0;
+      });
+      const sumDueAmmount = this.bills.reduce((sum, bill) => {
+        return sum + bill.due_ammount;
+      }, 0);
+
+      if (openBills.length > 0) {
+        const openBillsSum = openBills.reduce((sum, bill) => {
+          return sum + bill.ammount;
+        }, 0);
+
+        return openBillsSum > 0
+          ? ((parseInt(sumDueAmmount) / parseInt(openBillsSum)) * 100).toFixed(
+              2
+            )
+          : 0;
+      }
+      return 0;
     },
   },
   created() {
