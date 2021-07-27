@@ -45,7 +45,7 @@
         <i class="fa fa-trash" aria-hidden="true"></i>
       </button>
     </div>
-    <h3 v-show="bill.due_ammount == 0"> Bill Closed</h3>
+    <h3 v-show="bill.due_ammount == 0">Bill Closed</h3>
     <label> Org ID : </label>
     {{ bill.o_id }}
     <p></p>
@@ -214,11 +214,11 @@ export default {
   border: 0ch;
 }
 .bill-buttons {
-  position: relative;
   left: 97%;
   font: 15px/1.4 "Poppins", sans-serif;
   color: black;
   transition: all 0.3s linear;
   outline: none;
+  float: right;
 }
 </style>

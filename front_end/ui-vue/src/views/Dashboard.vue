@@ -1,6 +1,11 @@
 <template>
   <div class="containers">
-    <Button @click="logout" title="Logout" color="red" />
+    <Button
+      @click="logout"
+      title="Logout"
+      color="red"
+      :style="{ float: 'right' }"
+    />
     <h1>Organisations</h1>
     <Button @click="addorg" title="Add Organisation" color="green" />
     <AddOrg @refresh="pushOrg" @cancel="cancel" v-if="addOrg" />
