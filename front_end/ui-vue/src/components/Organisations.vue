@@ -1,6 +1,6 @@
 <template>
   <div :key="org.o_id" v-for="org in Orgs">
-    <Organisation :org="org" />
+    <Organisation @deleteOrg="$emit('deleteOrg', org.o_id)" :org="org" />
   </div>
 </template>
 <script>
@@ -16,6 +16,7 @@ export default {
   props: {
     Orgs: Array,
   },
+  emits: ["deleteOrg", "updateOrg"],
 };
 </script>
 
@@ -29,5 +30,4 @@ export default {
   padding: 10px 20px;
   cursor: pointer;
 }
-
 </style>
