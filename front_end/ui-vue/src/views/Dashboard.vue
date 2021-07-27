@@ -10,10 +10,7 @@
     <Button @click="addorg" title="Add Organisation" color="green" />
     <AddOrg @refresh="pushOrg" @cancel="cancel" v-if="addOrg" />
     <div>
-      <h3>Organisation Name Location GST Number</h3>
-    </div>
-    <div>
-      <Organisations v-if="logged" :Orgs="Orgs" />
+      <Organisations @deleteOrg="deleteOrg" v-if="logged" :Orgs="Orgs" />
     </div>
     <!-- <Button @click="" title="Cancel" color="red" /> -->
     <p v-if="true"></p>
@@ -39,6 +36,26 @@ export default {
     AddOrg,
   },
   methods: {
+    async deleteOrg(org_id) {
+      const data = {
+        u_id: localStorage.getItem("u_id"),
+        o_id: org_id,
+      };
+      const response = await fetch(
+        `api/users/${localStorage.getItem("u_id")}/orgs/${org_id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-type": "application/json",
+            authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+          },
+          body: JSON.stringify(data),
+        }
+      );
+      if (response.status === 200) {
+        this.fetchorg();
+      }
+    },
     logout() {
       localStorage.removeItem("u_id");
       localStorage.removeItem("jwtToken");
@@ -82,7 +99,6 @@ export default {
     },
   },
   created() {
-    console.log("Dashboard comp created.");
     if (!this.getUserId() || !this.getJwtToken()) {
       this.$router.push("Login");
     }

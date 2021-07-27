@@ -43,7 +43,6 @@ export default {
         o_gst: this.o_gst,
         o_location: this.o_location,
       };
-      console.log("Add");
       const response = await fetch(
         `api/users/${localStorage.getItem("u_id")}/orgs`,
         {
@@ -56,13 +55,10 @@ export default {
         }
       );
       const result = await response.json();
-      console.log(result.data);
       if (response.status === 200) {
         this.$emit("refresh", result.data);
         this.$emit("cancel");
       }
-      console.log(response);
-      console.log(response.status);
     },
   },
   emits: ["cancel", "refresh"],
