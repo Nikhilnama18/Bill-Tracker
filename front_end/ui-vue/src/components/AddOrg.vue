@@ -2,15 +2,28 @@
   <div class="container">
     <div class="addorg">
       Organisation Name
-      <input v-model="o_name" type="text" id="orgName" placeholder="Org Name" />
+      <input
+        class="linkField"
+        v-model="o_name"
+        type="text"
+        id="orgName"
+        placeholder="Org Name"
+      />
       <br />
       Organisation GST
       <br />
-      <input v-model="o_gst" type="text" id="orgGst" placeholder="Org GST" />
+      <input
+        class="linkField"
+        v-model="o_gst"
+        type="text"
+        id="orgGst"
+        placeholder="Org GST"
+      />
       <br />
       Organisation Location
       <br />
       <input
+        class="linkField"
         v-model="o_location"
         type="text"
         id="orgLocation"
@@ -70,5 +83,15 @@ export default {
   margin: 5px;
   padding: 10px 20px;
   cursor: pointer;
+}
+
+.linkField {
+  width: 70%;
+  padding: 10px 10px;
+  margin: 5px 0;
+  display: inline-block;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  box-sizing: border-box;
 }
 </style>

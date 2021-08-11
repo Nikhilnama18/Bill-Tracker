@@ -1,8 +1,9 @@
 <template>
   <div class="containers">
     <form class="userDetails">
-      <label> UserName:</label>
+      <label> UserName: </label>
       <input
+        class="linkField"
         v-model="u_name"
         type="text"
         id="u_name"
@@ -10,8 +11,9 @@
         required
       />
       <br />
-      <label>Password :</label>
+      <label>Password : </label>
       <input
+      class="linkField"
         v-model="u_password"
         type="password"
         id="u_password"
@@ -120,7 +122,7 @@ export default {
 
 
 
-<style >
+<style  scoped>
 .userDetails {
   background: #f4f4f4;
   margin: 5px;
@@ -135,5 +137,16 @@ export default {
   border: 1px solid steelblue;
   padding: 20px;
   border-radius: 10px;
+}
+
+.linkField {
+  width: 60%;
+  left: 20%;
+  padding: 10px 10px;
+  margin: 5px 0;
+  display: inline-block;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  box-sizing: border-box;
 }
 </style>

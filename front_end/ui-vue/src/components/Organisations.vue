@@ -1,6 +1,8 @@
 <template>
-  <div :key="org.o_id" v-for="org in Orgs">
-    <Organisation @deleteOrg="$emit('deleteOrg', org.o_id)" :org="org" />
+  <div>
+    <div :key="org.o_id" v-for="org in Orgs">
+      <Organisation @deleteOrg="$emit('deleteOrg', org.o_id)" :org="org" />
+    </div>
   </div>
 </template>
 <script>
