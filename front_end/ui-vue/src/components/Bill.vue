@@ -56,6 +56,7 @@
     <div v-show="isUpdateClicked">
       <label> Ammount : </label>
       <input
+        class="linkField"
         type="number"
         name="update_ammount"
         id="update_ammount"
@@ -64,6 +65,7 @@
       <p></p>
       <label> Due Ammount : </label>
       <input
+        class="linkField"
         type="number"
         name="update_due_ammount"
         id="update_due_ammount"
@@ -220,5 +222,15 @@ export default {
   transition: all 0.3s linear;
   outline: none;
   float: right;
+}
+
+.linkField {
+  width: 10%;
+  padding: 3px 3px;
+  margin: 1px 0;
+  display: inline-block;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  box-sizing: border-box;
 }
 </style>

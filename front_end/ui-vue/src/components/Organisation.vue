@@ -35,13 +35,28 @@
 
     <div v-show="isUpdateClicked">
       <label> Org Name : </label>
-      <input type="text" name="update_Name" v-model="updateName" />
+      <input
+        class="linkField"
+        type="text"
+        name="update_Name"
+        v-model="updateName"
+      />
       <p></p>
       <label> Location : </label>
-      <input type="text" name="update_Location" v-model="updateLocation" />
+      <input
+        class="linkField"
+        type="text"
+        name="update_Location"
+        v-model="updateLocation"
+      />
       <p></p>
       <label> GST Number: </label>
-      <input type="text" name="update_GST_Number" v-model="updateGST" />
+      <input
+        class="linkField"
+        type="text"
+        name="update_GST_Number"
+        v-model="updateGST"
+      />
       <Button @click="updateOrg" title="Update" color="purple" />
     </div>
   </div>
@@ -112,8 +127,7 @@ export default {
 };
 </script>
 
-
-<style scope>
+<style  scoped>
 .fas {
   color: rgb(0, 38, 255);
 }
@@ -124,5 +138,14 @@ export default {
   min-height: 100px;
   padding: 20px;
   border-radius: 10px;
+}
+.linkField {
+  width: 40%;
+  padding: 3px 3px;
+  margin: 1px 0;
+  display: inline-block;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  box-sizing: border-box;
 }
 </style>
