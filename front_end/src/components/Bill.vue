@@ -46,8 +46,6 @@
       </button>
     </div>
     <h3 v-show="bill.due_ammount == 0">Bill Closed</h3>
-    <label> Org ID : </label>
-    {{ bill.o_id }}
     <p></p>
     <label> Bill ID : </label>
     {{ bill.b_id }}
@@ -86,6 +84,17 @@
     <label> Bill Added on : </label>
     {{ new Date(bill.issue_timestamp).toDateString() }} @
     {{ new Date(bill.issue_timestamp).toLocaleTimeString("en") }}
+
+    <p></p>
+    <div v-show="bill.u_date != null">
+      <label> Bill Last Updated on : </label>
+      {{ new Date(bill.u_date).toDateString() }} @
+      {{ new Date(bill.u_date).toLocaleTimeString("en") }}
+    </div>
+    <div v-show="bill.u_date == null">
+      <label> Bill Last Updated on : Not Updated.</label>
+    </div>
+
     <div v-show="isUpdateClicked">
       <Button title="Update" color="purple" @click="updateBill" />
     </div>
