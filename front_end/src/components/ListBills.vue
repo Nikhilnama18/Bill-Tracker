@@ -1,10 +1,10 @@
 <template>
   <div>
-    <Button
-      @click="showAddBill = !showAddBill"
-      :title="showAddBill === false ? 'Add Bill' : 'Cancel'"
-      :color="showAddBill === false ? 'green' : 'red'"
-    />
+    <!-- title="showAddBill === false ? 'Add Bill' : 'Cancel'" -->
+    <button @click="showAddBill = !showAddBill" class="btns" title="Add Bill">
+      Add Bill
+    </button>
+    <!-- color="showAddBill === false ? 'green' : 'red'" -->
     <div v-show="showAddBill">
       <form>
         <input
@@ -15,6 +15,7 @@
           placeholder="Bill Ammout"
           required
         />
+        <!-- TODO : Change Due to Paid Ammount  -->
         <input
           v-model="dueAmmount"
           type="number"
@@ -243,3 +244,22 @@ export default {
   },
 };
 </script>
+
+<style  scoped>
+.btns {
+  top: 2%;
+  left: 90%;
+  display: inline-block;
+  background: rgb(35, 139, 35);
+  color: #fff;
+  border: none;
+  padding: 5px 5px;
+  margin: 5px;
+  border-radius: 10px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 15px;
+  font-family: inherit;
+  position: fixed;
+}
+</style>

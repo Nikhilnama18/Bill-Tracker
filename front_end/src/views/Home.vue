@@ -36,6 +36,7 @@ export default {
 </script>
 
 <style scoped>
+
 .userDetails {
   background: #f4f4f4;
   margin: 5px;
@@ -50,5 +51,6 @@ export default {
   border: 1px solid steelblue;
   padding: 30px;
   border-radius: 10px;
+  position: relative;
 }
 </style>

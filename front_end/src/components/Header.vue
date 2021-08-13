@@ -14,5 +14,12 @@ export default {
 };
 </script>
 
+<style scoped>
+/* h1{
+  top: 1%;
+  position: fixed;
+} */
+</style>
+
 
 

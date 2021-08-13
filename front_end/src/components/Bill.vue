@@ -225,7 +225,7 @@ export default {
 }
 
 .linkField {
-  width: 10%;
+  width: 25%;
   padding: 3px 3px;
   margin: 1px 0;
   display: inline-block;

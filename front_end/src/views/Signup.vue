@@ -1,9 +1,8 @@
 <template>
   <div class="userDetails">
-    <div class="container">
-      <h1>Creating A New Account</h1>
-      <br />
-      UserName
+    <div class="containers">
+      <h1 class="h1">Creating A New Account</h1>
+      <!-- UserName -->
       <!-- <br /> -->
       <input
         class="linkField"
@@ -14,7 +13,7 @@
       />
       <br />
       <p v-if="validuser">Please Enter a Valid User Name</p>
-      Password
+      <!-- Password -->
       <!-- <br /> -->
       <input
         class="linkField"
@@ -24,7 +23,7 @@
         placeholder="Password"
       />
       <br />
-      Re-Enter Password
+      <!-- Re-Enter Password -->
       <!-- <br /> -->
       <input
         class="linkField"
@@ -37,7 +36,7 @@
       <p v-if="wrongpwd">Password are not same</p>
       <p v-if="pwdlength">Password is weak</p>
       <p></p>
-      Organization Name
+      <!-- Organization Name -->
       <!-- <br /> -->
       <input
         class="linkField"
@@ -47,7 +46,7 @@
         placeholder="Organization Name"
       />
       <br />
-      Organization GSTIN:
+      <!-- Organization GSTIN: -->
       <!-- <br /> -->
       <input
         class="linkField"
@@ -57,7 +56,7 @@
         placeholder="GSTIN Number"
       />
       <br />
-      Organization Address
+      <!-- Organization Address -->
       <!-- <br /> -->
       <input
         class="linkField"
@@ -66,9 +65,17 @@
         id="u_org_address"
         placeholder="Organization Address"
       />
-      <Button @click="signup" title="SignUp" color="black" />
+      <button class="btns" @click="signup">SignUp</button>
+      <!-- <Button class="btns" @click="signup" title="SignUp" color="black" /> -->
       <router-link to="/" v-if="cancelclicked">
-        <Button @click="cancelclick" title="Cancel" color="red" />
+        <button
+          class="btns"
+          @click="cancel"
+          :style="[{ right: '37%' }, { background: 'red' }]"
+        >
+          Cancel
+        </button>
+        <!-- <Button @click="cancelclick" title="Cancel" color="red" /> -->
       </router-link>
       <router-link to="/login" v-if="usercreated">I</router-link>
     </div>
@@ -107,6 +114,7 @@ export default {
         this.pwdlength = true;
         return;
       }
+      console.log("IN signup");
       this.pwdlength = false;
       this.wrongpwd = false;
       this.validuser = false;
@@ -146,15 +154,55 @@ export default {
 </script>
 
 <style scoped>
+input {
+  top: 30%;
+  position: absolute;
+}
+
+.h1 {
+  left: 30%;
+}
+p {
+  top: 50%;
+  left: 15%;
+  position: relative;
+}
+
 .linkField {
-  width: 30%;
-  /* left: 10%; */
-  padding: 5px 5px;
-  margin: 1px 0;
+  width: 70%;
+  top: 50%;
+  left: 14%;
+  padding: 10px 20px;
+  margin: 7px 0;
   display: inline-block;
-  border: 2px solid #ccc;
+  border: 3x solid #ccc;
   border-radius: 10px;
   box-sizing: border-box;
+  position: relative;
+}
+.containers {
+  max-width: 800px;
+  margin: 50px auto;
+  overflow: auto;
+  min-height: 100px;
+  border: 1px solid steelblue;
+  padding: 60px;
+  border-radius: 10px;
+}
+.btns {
+  right: 40%;
+  top: 40%;
+  display: inline-block;
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 5px 5px;
+  margin: 5px;
+  border-radius: 10px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 15px;
+  font-family: inherit;
   position: relative;
 }
 </style>
