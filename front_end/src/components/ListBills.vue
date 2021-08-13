@@ -44,9 +44,10 @@
 
     <p>Total Bills : {{ bills.length }}</p>
     <p>Total Ammount : {{ totalAmmount }} &#x20B9;</p>
+    <p>Total Paid Ammount : {{ totoalPaidAmmount }} &#x20B9;</p>
     <p>Total Due Ammount : {{ totalDueAmmount }} &#x20B9;</p>
+    <p>Open bills Paid : {{ (100 - openDuePercent).toFixed(2) }} %</p>
     <p>Open bills Due : {{ openDuePercent }} %</p>
-    <p>Open bills Paid : {{ 100 - openDuePercent }} %</p>
     <div :key="bill.o_id" v-for="bill in bills">
       <Bill
         @delete-bill="deleteBill"
@@ -90,6 +91,7 @@ export default {
       );
       if (response.status === 200) {
         let result = await response.json();
+        console.log(result.data);
         this.bills = result.data;
       }
     },
@@ -206,6 +208,19 @@ export default {
         return sum + bill.ammount;
       }, 0);
       return this.numberWithCommas(sumAmmount);
+    },
+
+    totoalPaidAmmount() {
+      const sumAmmount = this.bills.reduce((sum, bill) => {
+        return sum + bill.ammount;
+      }, 0);
+
+      const sumDueAmmount = this.bills.reduce((sum, bill) => {
+        return sum + bill.due_ammount;
+      }, 0);
+      return this.numberWithCommas(
+      sumAmmount - sumDueAmmount
+      );
     },
 
     totalDueAmmount() {
