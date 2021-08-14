@@ -1,77 +1,69 @@
 <template>
-  <div class="userDetails">
-    <div class="container">
-      <h1>Creating A New Account</h1>
-      <br />
-      UserName
-      <!-- <br /> -->
-      <input
-        class="linkField"
-        v-model="u_name"
-        type="text"
-        id="u_name"
-        placeholder="User Name"
-      />
-      <br />
-      <p v-if="validuser">Please Enter a Valid User Name</p>
-      Password
-      <!-- <br /> -->
-      <input
-        class="linkField"
-        v-model="u_pwd"
-        type="password"
-        id="u_password1"
-        placeholder="Password"
-      />
-      <br />
-      Re-Enter Password
-      <!-- <br /> -->
-      <input
-        class="linkField"
-        v-model="u_re_pwd"
-        type="password"
-        id="u_password2"
-        placeholder="Re-Enter Password"
-      />
-      <br />
-      <p v-if="wrongpwd">Password are not same</p>
-      <p v-if="pwdlength">Password is weak</p>
-      <p></p>
-      Organization Name
-      <!-- <br /> -->
-      <input
-        class="linkField"
-        v-model="u_org_name"
-        type="text"
-        id="u_org_name"
-        placeholder="Organization Name"
-      />
-      <br />
-      Organization GSTIN:
-      <!-- <br /> -->
-      <input
-        class="linkField"
-        v-model="u_org_gst"
-        type="text"
-        id="u_org_gst"
-        placeholder="GSTIN Number"
-      />
-      <br />
-      Organization Address
-      <!-- <br /> -->
-      <input
-        class="linkField"
-        v-model="u_org_address"
-        type="text"
-        id="u_org_address"
-        placeholder="Organization Address"
-      />
-      <Button @click="signup" title="SignUp" color="black" />
-      <router-link to="/" v-if="cancelclicked">
-        <Button @click="cancelclick" title="Cancel" color="red" />
-      </router-link>
-      <router-link to="/login" v-if="usercreated">I</router-link>
-    </div>
+  <div class="containers">
+    <h1 class="h1">Creating A New Account</h1>
+    <br />
+    <input
+      class="textfields"
+      v-model="u_name"
+      type="text"
+      id="u_name"
+      placeholder="User Name"
+    />
+    <br />
+    <p v-if="validuser">Please Enter a Valid User Name</p>
+    <input
+      class="textfields"
+      v-model="u_pwd"
+      type="password"
+      id="u_password1"
+      placeholder="Password"
+    />
+    <br />
+    <input
+      class="textfields"
+      v-model="u_re_pwd"
+      type="password"
+      id="u_password2"
+      placeholder="Re-Enter Password"
+    />
+    <p v-if="wrongpwd">Password are not same</p>
+    <p v-if="pwdlength">Password is weak</p>
+    <p></p>
+    <input
+      class="textfields"
+      v-model="u_org_name"
+      type="text"
+      id="u_org_name"
+      placeholder="Organization Name"
+    />
+    <br />
+    <input
+      class="textfields"
+      v-model="u_org_gst"
+      type="text"
+      id="u_org_gst"
+      placeholder="GSTIN Number"
+    />
+    <br />
+    <input
+      class="textfields"
+      v-model="u_org_address"
+      type="text"
+      id="u_org_address"
+      placeholder="Organization Address"
+    />
+    <br />
+    <button class="btns" @click="signup">SignUp</button>
+    <router-link to="/" v-if="cancelclicked">
+      <button
+        class="btns"
+        @click="cancel"
+        :style="[{ left: '17px' }, { background: 'red' }]"
+      >
+        Cancel
+      </button>
+    </router-link>
+    <router-link to="/login" v-if="usercreated">I</router-link>
   </div>
 </template>
 <script>
@@ -105,6 +97,17 @@ export default {
       }
       if (this.u_pwd.length <= 5) {
         this.pwdlength = true;
+        return;
+      }
+      if (
+        this.u_name === "" ||
+        this.u_pwd === "" ||
+        this.u_org_address === "" ||
+        this.u_org_gst === "" ||
+        this.u_org_name === "" ||
+        this.u_re_pwd === ""
+      ) {
+        alert("Please enter all details");
         return;
       }
       this.pwdlength = false;
@@ -146,15 +149,49 @@ export default {
 </script>
 
 <style scoped>
-.linkField {
-  width: 30%;
-  /* left: 10%; */
-  padding: 5px 5px;
-  margin: 1px 0;
+.containers {
+  max-width: 600px;
+  margin: 50px auto;
+  border: 1px solid steelblue;
+  padding: 10px;
+  border-radius: 10px;
+  position: static;
+  padding: 50px;
+}
+
+.h1 {
+  margin-left: 13%;
+  position: static;
+}
+
+.textfields {
+  width: 70%;
+  top: 50%;
+  left: 14%;
+  padding: 10px 20px;
+  margin: 7px;
+  margin-left: 15%;
   display: inline-block;
-  border: 2px solid #ccc;
+  border: 1px solid #ccc;
   border-radius: 10px;
   box-sizing: border-box;
-  position: relative;
+  position: static;
+}
+
+.btns {
+  /* left: 169px; */
+  display: inline-block;
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 5px 5px;
+  margin: 5px;
+  margin-left: 23%;
+  border-radius: 10px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 15px;
+  font-family: inherit;
+  position: static;
 }
 </style>

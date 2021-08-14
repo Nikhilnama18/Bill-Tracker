@@ -1,10 +1,13 @@
 <template>
   <div>
     <router-link to="/dashboard">
-      <Button title="Dashboard" color="purple" />
+      <button class="btns" title="Dashboard" color="purple">Dashboard</button>
+      <!-- TODO: Move Dashboard to the right side  -->
     </router-link>
-    <h1 class="org-name">Organisation : {{ getOrgName() }}</h1>
-    <ListBills :org_id="org_id"></ListBills>
+    <div class="containers">
+      <h1 class="org-name">{{ getOrgName() }}</h1>
+      <ListBills :org_id="org_id"></ListBills>
+    </div>
   </div>
 </template>
 
@@ -20,9 +23,9 @@ export default {
     };
   },
   components: { ListBills, Button },
-  created() {
-    console.log(`Bills vue created ${this.$route.params.o_id}`);
-  },
+  // created() {
+  //   console.log(`Bills vue created ${this.$route.params.o_id}`);
+  // },
   methods: {
     getOrgName() {
       return this.$route.params.o_name || localStorage.getItem("org_name");
@@ -35,5 +38,30 @@ export default {
 .org-name {
   position: sticky;
   top: 0%;
+}
+.containers {
+  max-width: 600px;
+  margin: 50px auto;
+  overflow: auto;
+  /* min-height: 100px; */
+  border: 1px solid steelblue;
+  padding: 50px;
+  border-radius: 10px;
+}
+.btns {
+  top: 2%;
+  left: 80%;
+  display: inline-block;
+  background: purple;
+  color: #fff;
+  border: none;
+  padding: 5px 5px;
+  margin: 5px;
+  border-radius: 10px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 15px;
+  font-family: inherit;
+  position: fixed;
 }
 </style>
