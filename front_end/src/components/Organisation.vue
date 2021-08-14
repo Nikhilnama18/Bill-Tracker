@@ -49,7 +49,6 @@
         name="update_Location"
         v-model="updateLocation"
       />
-      <p></p>
       <label> GST Number: </label>
       <input
         class="linkField"

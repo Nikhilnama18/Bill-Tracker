@@ -50,7 +50,11 @@
         @click="$emit('delete-bill', bill.b_id)"
         alt="Delete Bill"
       >
-        <i class="fa fa-trash" aria-hidden="true"></i>
+        <i
+          class="fa fa-trash"
+          :style="[{ position: 'static' }]"
+          aria-hidden="true"
+        ></i>
       </button>
     </div>
 
@@ -370,7 +374,7 @@ export default {
 
 .delete-button {
   position: static;
-  overflow: hidden;
+  overflow: auto;
   border-radius: 8px;
   cursor: pointer;
   border: 0ch;

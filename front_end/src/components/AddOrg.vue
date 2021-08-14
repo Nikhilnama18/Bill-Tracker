@@ -1,41 +1,53 @@
 <template>
-  <div class="container">
-    <div class="addorg">
-      Organisation Name
-      <input
-        class="linkField"
-        v-model="o_name"
-        type="text"
-        id="orgName"
-        placeholder="Org Name"
-      />
-      <br />
-      Organisation GST
-      <br />
-      <input
-        class="linkField"
-        v-model="o_gst"
-        type="text"
-        id="orgGst"
-        placeholder="Org GST"
-      />
-      <br />
-      Organisation Location
-      <br />
-      <input
-        class="linkField"
-        v-model="o_location"
-        type="text"
-        id="orgLocation"
-        placeholder="Org Location"
-      />
-      <Button @click="add" title="Add" color="blue" />
-      <Button @click="$emit('cancel')" title="Cancel" color="red" />
-    </div>
+  <div class="addorg">
+    Organisation Name
+    <input
+      class="linkField"
+      v-model="o_name"
+      type="text"
+      id="orgName"
+      placeholder="Organisation Name"
+    />
+
+    <br />
+    Organisation Location
+    <br />
+    <input
+      class="linkField"
+      v-model="o_location"
+      type="text"
+      id="orgLocation"
+      placeholder="Organisation Location"
+    />
+    <br />
+
+    Organisation GST
+    <br />
+    <input
+      class="linkField"
+      v-model="o_gst"
+      type="text"
+      id="orgGst"
+      placeholder="Organisation GST"
+    />
+
+    <br />
+
+    <button
+      @click="$emit('cancel')"
+      class="addOrgbtn"
+      :style="[{ background: 'red' }]"
+    >
+      Cancel
+    </button>
+
+    <button @click="add" class="addOrgbtn">Add Organisation</button>
   </div>
 </template>
+
 <script>
 import Button from "./Button.vue";
+
 export default {
   name: "AddOrg",
   components: {
@@ -50,6 +62,7 @@ export default {
   },
   methods: {
     async add() {
+      // TODO : ADD Validations
       const data = {
         u_id: localStorage.getItem("u_id"),
         o_name: this.o_name,
@@ -77,12 +90,14 @@ export default {
   emits: ["cancel", "refresh"],
 };
 </script>
+
+
 <style scoped>
 .addorg {
-  background: #f4f4f4;
   margin: 5px;
+  margin-left: 15%;
   padding: 10px 20px;
-  cursor: pointer;
+  position: static;
 }
 
 .linkField {
@@ -93,5 +108,19 @@ export default {
   border: 2px solid #ccc;
   border-radius: 10px;
   box-sizing: border-box;
+}
+
+.addOrgbtn {
+  display: inline-block;
+  color: #fff;
+  background: green;
+  border: none;
+  padding: 5px 5px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 15px;
+  font-family: inherit;
 }
 </style>
