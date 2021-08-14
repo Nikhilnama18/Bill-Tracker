@@ -66,6 +66,7 @@
     <router-link to="/login" v-if="usercreated">I</router-link>
   </div>
 </template>
+
 <script>
 import Button from "../components/Button.vue";
 export default {
