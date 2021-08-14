@@ -1,14 +1,9 @@
 <template>
   <div>
-    <Header title="/Billing App" />
-    <!-- <UserCredentails @signin="login" v-if="showuser" /> -->
-    <!-- <Signup
-      @signup="signup"
-      v-if="showuser"
-      :title="showuser ? 'Signup' : 'Cancel'"
-    />
-    <NewUser @goBack="signup" @create="create" v-if="!showuser" /> -->
-    <router-view></router-view>
+    <div class="app">
+      <Header title="/Bill Tracker" />
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
@@ -69,9 +64,14 @@ export default {
 body {
   font-family: "Poppins", sans-serif;
 }
+
+.app {
+  position: static;
+  /* height: 1000vh;  */
+}
 .container {
   max-width: 700px;
-  margin: 10px ;
+  margin: 10px;
   overflow: auto;
   min-height: 300px;
   border: 1px solid steelblue;

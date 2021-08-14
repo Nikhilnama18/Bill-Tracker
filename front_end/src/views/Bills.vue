@@ -43,7 +43,7 @@ export default {
   max-width: 600px;
   margin: 50px auto;
   overflow: auto;
-  min-height: 100px;
+  /* min-height: 100px; */
   border: 1px solid steelblue;
   padding: 50px;
   border-radius: 10px;

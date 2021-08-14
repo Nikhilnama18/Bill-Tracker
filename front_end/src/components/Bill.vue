@@ -28,7 +28,11 @@
         alt="Edit Bill"
       >
         <i
-          :class="['fa', isUpdateClicked ? 'fa-times' : 'fa-pencil']"
+          :class="[
+            'pos-static',
+            'fa',
+            isUpdateClicked ? 'fa-times' : 'fa-pencil',
+          ]"
           aria-hidden="true"
         ></i>
       </button>
@@ -196,7 +200,7 @@ export default {
       isUpdateClicked: false,
       isMakePaymentClicked: false,
       updateAmmount: this.bill.ammount,
-    //   updateDueAmmount: this.bill.due_ammount,
+      //   updateDueAmmount: this.bill.due_ammount,
       paymentAmmount: 0,
       paymentIsGreater: false,
     };
@@ -226,7 +230,7 @@ export default {
             },
             body: JSON.stringify({
               ammount: parseInt(this.updateAmmount),
-            //   due_ammount: parseInt(this.updateDueAmmount),
+              //   due_ammount: parseInt(this.updateDueAmmount),
             }),
           }
         );
@@ -239,7 +243,7 @@ export default {
             // No dependencies on this event emit currently.
             this.$emit("update-bill", {
               ammount: parseInt(this.updateAmmount),
-            //   due_ammount: parseInt(this.updateDueAmmount),
+              //   due_ammount: parseInt(this.updateDueAmmount),
               b_id: this.bill.b_id,
             });
             // Update the bill in UI.
@@ -345,6 +349,7 @@ export default {
 <style scope>
 .bill {
   background: #f4f4f4;
+  margin-top: 15%;
   margin: 5px;
   overflow: hidden;
   min-height: 100px;
@@ -356,7 +361,6 @@ export default {
   position: relative;
 } */
 .edit-button {
-  position: relative;
   margin-right: 10px;
   overflow: hidden;
   border-radius: 8px;
@@ -365,7 +369,7 @@ export default {
 }
 
 .delete-button {
-  position: relative;
+  position: static;
   overflow: hidden;
   border-radius: 8px;
   cursor: pointer;
@@ -388,5 +392,9 @@ export default {
   border: 2px solid #ccc;
   border-radius: 10px;
   box-sizing: border-box;
+}
+
+.pos-static {
+  position: static;
 }
 </style>
