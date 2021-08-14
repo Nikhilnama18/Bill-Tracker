@@ -32,6 +32,13 @@
           id="billTimestamp"
           required
         />
+ 
+        <p v-if="errors.length">
+           <b>Please correct the following error(s):</b>
+           <ul>
+             <li :key="error" v-for="error in errors">{{ error }}</li>
+           </ul>
+         </p>
 
         <input
           type="submit"
@@ -70,11 +77,12 @@ export default {
   },
   data() {
     return {
+      errors: [],
       bills: [],
       showAddBill: false,
       dueAmmount: 0,
       ammount: 0,
-      billTimestamp: new Date(),
+      billTimestamp: moment(new Date()).format("YYYY-MM-DDTkk:mm"),
     };
   },
   components: { Bill, Button },
@@ -100,6 +108,22 @@ export default {
     async createBill(event) {
       event.preventDefault();
 
+      // Validation
+      this.errors = [];
+
+      if (!this.ammount || parseInt(this.ammount) <= 0) {
+        this.errors.push("Bill amount is too low.");
+      }
+      if (
+        !this.dueAmmount ||
+        parseInt(this.dueAmmount) <= 0 ||
+        parseInt(this.dueAmmount) > parseInt(this.ammount)
+      ) {
+        this.errors.push("Invalid due amount identified.");
+      }
+
+      if (this.errors.length > 0) return;
+
       const response = await fetch(
         `api/users/${this.getUserId()}/orgs/${this.getOrgId()}/bills`,
         {
@@ -116,6 +140,7 @@ export default {
           }),
         }
       );
+
       if (response.status == 200) {
         let result = await response.json();
         if (result.statusCode == "10000") {
@@ -219,9 +244,7 @@ export default {
       const sumDueAmmount = this.bills.reduce((sum, bill) => {
         return sum + bill.due_ammount;
       }, 0);
-      return this.numberWithCommas(
-      sumAmmount - sumDueAmmount
-      );
+      return this.numberWithCommas(sumAmmount - sumDueAmmount);
     },
 
     totalDueAmmount() {
