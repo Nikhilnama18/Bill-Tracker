@@ -7,7 +7,12 @@
       :style="{ float: 'right' }"
     />
     <h1>Organisations</h1>
-    <Button @click="addorg" title="Add Organisation" color="green" />
+    <Button
+      @click="addorg"
+      title="Add Organisation"
+      v-if="!addOrg"
+      color="green"
+    />
     <AddOrg @refresh="pushOrg" @cancel="cancel" v-if="addOrg" />
     <div>
       <Organisations @deleteOrg="deleteOrg" v-if="logged" :Orgs="Orgs" />
