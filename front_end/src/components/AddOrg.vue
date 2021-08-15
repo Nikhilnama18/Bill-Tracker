@@ -1,18 +1,18 @@
 <template>
-  <div class="addorg">
-    Organisation Name
-    <input
-      class="linkField"
-      v-model="o_name"
-      type="text"
-      id="orgName"
-      placeholder="Organisation Name"
-    />
+    <div class="addorg">
+      Organisation Name
+      <input
+        class="linkField"
+        v-model="o_name"
+        type="text"
+        id="orgName"
+        placeholder="Organisation Name"
+      />
 
-    <br />
-    Organisation Location
-    <br />
-    <input
+      <br />
+      Organisation Location
+      <br />
+      <input
       class="linkField"
       v-model="o_location"
       type="text"
@@ -23,15 +23,21 @@
 
     Organisation GST
     <br />
-    <input
-      class="linkField"
-      v-model="o_gst"
-      type="text"
-      id="orgGst"
-      placeholder="Organisation GST"
-    />
+      <input
+        class="linkField"
+        v-model="o_gst"
+        type="text"
+        id="orgGst"
+        placeholder="Org GST"
+      />
+      <br />
 
-    <br />
+      <p v-if="errors.length">
+    <b>Please correct the following error(s):</b>
+    <ul>
+      <li :key="error" v-for="error in errors">{{ error }}</li>
+    </ul>
+  </p>
 
     <button
       @click="$emit('cancel')"
@@ -42,7 +48,8 @@
     </button>
 
     <button @click="add" class="addOrgbtn">Add Organisation</button>
-  </div>
+    </div>
+  
 </template>
 
 <script>
@@ -55,6 +62,7 @@ export default {
   },
   data() {
     return {
+      errors: [],
       o_name: "",
       o_gst: "",
       o_location: "",
@@ -62,13 +70,31 @@ export default {
   },
   methods: {
     async add() {
-      // TODO : ADD Validations
+      // Validation
+      this.errors = [];
+
+      if (!this.o_name || this.o_name.length == 0) {
+        this.errors.push("Organisation Name required.");
+      }
+      if (!this.o_gst || this.o_gst.length == 0) {
+        this.errors.push("Organisation GST Number required.");
+      }
+      //   if (this.o_gst.length != 15) {
+      //     this.errors.push("Enter a valid Organisation GST Number.");
+      //   }
+      if (!this.o_location || this.o_location.length == 0) {
+        this.errors.push("Organisation Location required.");
+      }
+      if (this.errors.length > 0) return;
+
+      // Request to backend.
       const data = {
         u_id: localStorage.getItem("u_id"),
         o_name: this.o_name,
         o_gst: this.o_gst,
         o_location: this.o_location,
       };
+
       const response = await fetch(
         `api/users/${localStorage.getItem("u_id")}/orgs`,
         {
@@ -80,17 +106,20 @@ export default {
           body: JSON.stringify(data),
         }
       );
+
       const result = await response.json();
+
       if (response.status === 200) {
         this.$emit("refresh", result.data);
         this.$emit("cancel");
+      } else if (response.status >= 300) {
+        this.errors.push(result.message);
       }
     },
   },
   emits: ["cancel", "refresh"],
 };
 </script>
-
 
 <style scoped>
 .addorg {
