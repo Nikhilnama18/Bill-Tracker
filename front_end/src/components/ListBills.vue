@@ -9,6 +9,7 @@
       <form>
         <input
           v-model="ammount"
+          class="textField"
           type="number"
           name="ammount"
           id="ammount"
@@ -18,6 +19,7 @@
         <!-- TODO : Change Due to Paid Ammount  -->
         <input
           v-model="dueAmmount"
+          class="textField"
           type="number"
           name="dueAmmount"
           id="dueAmmount"
@@ -27,6 +29,7 @@
 
         <input
           v-model="billTimestamp"
+          class="textField"
           type="datetime-local"
           name="billTimestamp"
           id="billTimestamp"
@@ -80,8 +83,8 @@ export default {
       errors: [],
       bills: [],
       showAddBill: false,
-      dueAmmount: 0,
-      ammount: 0,
+      dueAmmount: Number,
+      ammount: Number,
       billTimestamp: moment(new Date()).format("YYYY-MM-DDTkk:mm"),
     };
   },
@@ -284,6 +287,16 @@ export default {
 </script>
 
 <style  scoped>
+.textField {
+  width: 70%;
+  padding: 10px 10px;
+  margin: 5px 0;
+  display: inline-block;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
 .btns {
   top: 2%;
   left: 90%;
