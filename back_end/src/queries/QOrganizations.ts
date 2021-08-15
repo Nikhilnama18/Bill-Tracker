@@ -17,7 +17,8 @@ WHERE u_id = $1 AND o_name = $2 AND isdeleted = false`;
 export const getOrganizationsByUserId_Q =
     `SELECT *
 FROM organizations
-WHERE u_id = $1 AND isdeleted = false`;
+WHERE u_id = $1 AND isdeleted = false
+ORDER BY c_date DESC`;
 
 export const getOrganizationById_Q =
     `SELECT * 

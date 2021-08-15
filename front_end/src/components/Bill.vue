@@ -91,9 +91,10 @@
       {{ numberWithCommas(bill.ammount) }} &#x20B9;
 
       <p></p>
-      <label> Due Ammount : </label>
-      {{ numberWithCommas(bill.due_ammount) }} &#x20B9;
     </div>
+    
+    <label> Due Ammount : </label>
+    {{ numberWithCommas(bill.due_ammount) }} &#x20B9;
 
     <p></p>
     <label> Bill Added on : </label>
@@ -101,12 +102,12 @@
     {{ new Date(bill.issue_timestamp).toLocaleTimeString("en") }}
 
     <p></p>
-    <div v-show="bill.u_date != null">
+    <div v-show="billUpdatedTime != null">
       <label> Bill Last Updated on : </label>
-      {{ new Date(bill.u_date).toDateString() }} @
-      {{ new Date(bill.u_date).toLocaleTimeString("en") }}
+      {{ new Date(billUpdatedTime).toDateString() }} @
+      {{ new Date(billUpdatedTime).toLocaleTimeString("en") }}
     </div>
-    <div v-show="bill.u_date == null">
+    <div v-show="billUpdatedTime == null">
       <label> Bill Last Updated on : Not Updated.</label>
     </div>
 
@@ -207,6 +208,7 @@ export default {
       //   updateDueAmmount: this.bill.due_ammount,
       paymentAmmount: 0,
       paymentIsGreater: false,
+      billUpdatedTime: this.bill.u_date,
     };
   },
   emits: ["delete-bill", "update-bill"],
@@ -216,7 +218,6 @@ export default {
     },
 
     async updateBill() {
-      console.log("update bill :", this.bill.b_id);
       if (
         confirm(
           `Are you sure , you want to update the bill with id : ${this.bill.b_id}`
@@ -234,7 +235,10 @@ export default {
             },
             body: JSON.stringify({
               ammount: parseInt(this.updateAmmount),
-              //   due_ammount: parseInt(this.updateDueAmmount),
+              due_ammount:
+                parseInt(this.bill.due_ammount) +
+                parseInt(this.updateAmmount) -
+                this.bill.ammount,
             }),
           }
         );
@@ -251,8 +255,9 @@ export default {
               b_id: this.bill.b_id,
             });
             // Update the bill in UI.
-            this.bill.ammount = parseInt(this.updateAmmount);
-            // this.bill.due_ammount = parseInt(this.updateDueAmmount);
+            this.bill.ammount = parseInt(result.data[0].ammount);
+            this.bill.due_ammount = result.data[0].due_ammount;
+            this.billUpdatedTime = result.data[0].u_date;
           } else {
             alert("Unable to update bill.");
           }
@@ -335,6 +340,7 @@ export default {
 
             // Update the bill in UI.
             this.bill.due_ammount = parseInt(newDueAmmount);
+            this.billUpdatedTime = result.data[0].u_date;
           } else {
             alert("Unable to update payment of bill. Please try again");
           }
