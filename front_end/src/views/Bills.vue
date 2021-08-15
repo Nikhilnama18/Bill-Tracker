@@ -23,9 +23,6 @@ export default {
     };
   },
   components: { ListBills, Button },
-  // created() {
-  //   console.log(`Bills vue created ${this.$route.params.o_id}`);
-  // },
   methods: {
     getOrgName() {
       return this.$route.params.o_name || localStorage.getItem("org_name");
@@ -36,8 +33,10 @@ export default {
 
 <style scoped>
 .org-name {
-  position: sticky;
-  top: 0%;
+  margin-left: 30%;
+  margin-right: 45%;
+  color: whitesmoke;
+  background: black;
 }
 .containers {
   max-width: 600px;
@@ -47,6 +46,7 @@ export default {
   border: 1px solid steelblue;
   padding: 50px;
   border-radius: 10px;
+  position: static;
 }
 .btns {
   top: 2%;
