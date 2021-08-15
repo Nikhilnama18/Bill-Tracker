@@ -35,8 +35,7 @@ export default {
 .org-name {
   margin-left: 30%;
   margin-right: 45%;
-  color: whitesmoke;
-  background: black;
+  color: black;
 }
 .containers {
   max-width: 600px;

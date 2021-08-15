@@ -92,7 +92,7 @@
 
       <p></p>
     </div>
-    
+
     <label> Due Ammount : </label>
     {{ numberWithCommas(bill.due_ammount) }} &#x20B9;
 
@@ -134,60 +134,22 @@
           >Payment amount is greater than due amount</b
         >
       </p>
-      <Button
-        v-show="isMakePaymentClicked"
+      <button
         @click="
           isMakePaymentClicked = !isMakePaymentClicked;
           paymentIsGreater = false;
           paymentAmmount = 0;
         "
-        title="Cancel Payment"
-      />
-
-      <Button
-        color="Indigo"
-        class="edit-button"
-        @click="makePaymentClicked"
-        alt="Make Payment"
-        title="Make Payment"
-      />
-
-      <!-- <button
+        class="make-payment"
+        :style="{ background: 'black' }"
         v-show="isMakePaymentClicked"
-        class="edit-button"
-        :style="[
-          bill.due_ammount == 0
-            ? { background: 'Pink' }
-            : bill.due_ammount < bill.ammount / 2
-            ? { background: 'LightGreen' }
-            : { background: 'Lavender' },
-          'font-size: 120%',
-        ]"
-        @click="
-          isMakePaymentClicked = !isMakePaymentClicked;
-          paymentIsGreater = false;
-          paymentAmmount = 0;
-        "
-        alt="Cancel Payment"
       >
-        Cancel Payment
+        Cancel
       </button>
 
-      <button
-        class="edit-button"
-        :style="[
-          bill.due_ammount == 0
-            ? { background: 'Pink' }
-            : bill.due_ammount < bill.ammount / 2
-            ? { background: 'LightGreen' }
-            : { background: 'Lavender' },
-          'font-size: 120%',
-        ]"
-        @click="makePaymentClicked"
-        alt="Make Payment"
-      >
-        Make Payment
-      </button> -->
+      <button @click="makePaymentClicked" class="make-payment">
+        {{ isMakePaymentClicked == true ? "Pay" : "Make Payment" }}
+      </button>
     </div>
   </div>
 </template>
@@ -405,6 +367,21 @@ export default {
 }
 
 .pos-static {
+  position: static;
+}
+
+.make-payment {
+  display: inline-block;
+  background: indigo;
+  color: white;
+  padding: 5px 5px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 15px;
+  font-family: inherit;
+  border: none;
   position: static;
 }
 </style>

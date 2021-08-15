@@ -1,14 +1,14 @@
 <template>
   <div>
     <!-- title="showAddBill === false ? 'Add Bill' : 'Cancel'" -->
-    <button @click="showAddBill = !showAddBill" class="btns" title="Add Bill">
+    <button @click="showAddBill = !showAddBill" v-if="!showAddBill" class="add-bill" :style="[{'margin-left':'84%'}]" title="Add Bill">
       Add Bill
     </button>
     <!-- color="showAddBill === false ? 'green' : 'red'" -->
     <div v-show="showAddBill">
-      <form>
         <input
           v-model="ammount"
+          class="textField"
           type="number"
           name="ammount"
           id="ammount"
@@ -18,6 +18,7 @@
         <!-- TODO : Change Due to Paid Ammount  -->
         <input
           v-model="dueAmmount"
+          class="textField"
           type="number"
           name="dueAmmount"
           id="dueAmmount"
@@ -27,6 +28,7 @@
 
         <input
           v-model="billTimestamp"
+          class="textField"
           type="datetime-local"
           name="billTimestamp"
           id="billTimestamp"
@@ -39,15 +41,9 @@
              <li :key="error" v-for="error in errors">{{ error }}</li>
            </ul>
          </p>
-
-        <input
-          type="submit"
-          @click="createBill"
-          value="Add bill"
-          :style="{ background: '#458eff' }"
-          class="btn"
-        />
-      </form>
+         <br/>
+          <button @click="showAddBill = !showAddBill" class="add-bill" :style="{background:'black'}">Cancel</button>
+          <button @click="createBill" class="add-bill">Add </button>
     </div>
 
     <p>Total Bills : {{ bills.length }}</p>
@@ -80,8 +76,8 @@ export default {
       errors: [],
       bills: [],
       showAddBill: false,
-      dueAmmount: 0,
-      ammount: 0,
+      dueAmmount: Number,
+      ammount: Number,
       billTimestamp: moment(new Date()).format("YYYY-MM-DDTkk:mm"),
     };
   },
@@ -116,7 +112,7 @@ export default {
       }
       if (
         !this.dueAmmount ||
-        parseInt(this.dueAmmount) <= 0 ||
+        parseInt(this.dueAmmount) < 0 ||
         parseInt(this.dueAmmount) > parseInt(this.ammount)
       ) {
         this.errors.push("Invalid due amount identified.");
@@ -284,20 +280,27 @@ export default {
 </script>
 
 <style  scoped>
-.btns {
-  top: 2%;
-  left: 90%;
+.textField {
+  width: 70%;
+  padding: 10px 10px;
+  margin: 5px 0;
+  display: inline-block;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+.add-bill {
   display: inline-block;
   background: rgb(35, 139, 35);
   color: #fff;
   border: none;
-  padding: 5px 5px;
+  padding: 8px 8px;
   margin: 5px;
   border-radius: 10px;
   cursor: pointer;
   text-decoration: none;
   font-size: 15px;
   font-family: inherit;
-  position: fixed;
 }
 </style>
