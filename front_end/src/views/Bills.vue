@@ -33,8 +33,8 @@ export default {
 
 <style scoped>
 .org-name {
-  margin-left: 30%;
-  margin-right: 45%;
+  display: flex;
+  justify-content: center;
   color: black;
 }
 .containers {
