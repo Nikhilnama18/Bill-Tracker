@@ -1,7 +1,7 @@
 <template>
   <div>
     <router-link to="/dashboard">
-      <button class="btns" title="Dashboard" color="purple">Dashboard</button>
+      <!-- <button class="btns" title="Dashboard" color="purple">Dashboard</button> -->
       <!-- TODO: Move Dashboard to the right side  -->
     </router-link>
     <div class="containers">
