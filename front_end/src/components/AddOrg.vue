@@ -122,7 +122,12 @@ export default {
 </script>
 
 <style scoped>
-
+.addorg {
+  margin: 5px;
+  margin-left: 18%;
+  padding: 10px 20px;
+  position: static;
+}
 
 .linkField {
   width: 70%;

@@ -26,6 +26,9 @@
       <p v-if="connectionIssue">
         Cannot connect to our service. Please try again in few moments.
       </p>
+      <router-link to="/">
+        <button class="btn">Cancel</button>
+      </router-link>
       <input
         :disabled="!isLoginEnabled"
         type="submit"
@@ -34,9 +37,6 @@
         :style="{ background: '#458eff' }"
         class="btn"
       />
-      <router-link to="/">
-        <Button title="Cancel" color="red" />
-      </router-link>
     </form>
   </div>
 </template>
@@ -94,7 +94,7 @@ export default {
         if (result.statusCode === "10000") {
           localStorage.setItem("u_id", JSON.stringify(result.data.u_id));
           localStorage.setItem("jwtToken", JSON.stringify(result.data.token));
-          this.$router.push("Dashboard");
+          this.$router.push({ path: "/dashboard" });
         }
       } else if (response.status == 500) {
         this.connectionIssue = true;
@@ -114,7 +114,7 @@ export default {
   created() {
     if (this.getUserId() && this.getJwtToken()) {
       // User id and jwt token are present.
-      this.$router.push("Dashboard");
+      this.$router.push({ path: "/dashboard" });
     }
   },
 };
@@ -127,7 +127,6 @@ export default {
   background: #f4f4f4;
   margin: 5px;
   padding: 10px 20px;
-  cursor: pointer;
 }
 .containers {
   max-width: 500px;

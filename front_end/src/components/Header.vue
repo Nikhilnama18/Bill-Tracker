@@ -59,7 +59,7 @@ export default {
   margin: 0%;
   color: whitesmoke;
   background: black;
-  height: 10vh;
+  height: 12vh;
 }
 
 .logout-btn {
