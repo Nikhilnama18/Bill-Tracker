@@ -1,9 +1,8 @@
 <template>
   <div class="navigation">
     <header>
-      <!-- <button v-if="$route.fullPath != '/'">Dashboard</button> -->
       <button
-        v-if="getJwtToken != '/' && getJwtToken != '/login'"
+        v-if="getJwtToken === '/dashboard' || getJwtToken === '/bills'"
         class="logout-btn"
         :style="{
           background: 'red',
@@ -36,7 +35,7 @@ export default {
   },
   methods: {
     dashboard() {
-      this.$router.push({ name: "Dashboard" });
+      this.$router.push({ path: "/dashboard" });
     },
     logout() {
       localStorage.removeItem("u_id");
@@ -60,7 +59,7 @@ export default {
   margin: 0%;
   color: whitesmoke;
   background: black;
-  height: 10vh;
+  height: 12vh;
 }
 
 .logout-btn {

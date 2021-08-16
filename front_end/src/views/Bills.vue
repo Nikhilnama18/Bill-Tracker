@@ -32,8 +32,9 @@ export default {
 </script>
 
 <style scoped>
-h1 {
-  text-align: center;
+.org-name {
+  display: flex;
+  justify-content: center;
   color: black;
 }
 .containers {
