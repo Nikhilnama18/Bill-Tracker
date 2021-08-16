@@ -1,18 +1,15 @@
 <template>
   <div class="containers">
-    <Button
-      @click="logout"
-      title="Logout"
-      color="red"
-      :style="{ float: 'right' }"
-    />
-    <h1>Organisations</h1>
+    <h1 class="org-name">Organisations</h1>
     <Button
       @click="addorg"
       title="Add Organisation"
       v-if="!addOrg"
       color="green"
+      :style="{ float: 'right' }"
     />
+    <br />
+    <br />
     <AddOrg @refresh="pushOrg" @cancel="cancel" v-if="addOrg" />
     <div>
       <Organisations @deleteOrg="deleteOrg" v-if="logged" :Orgs="Orgs" />
@@ -121,5 +118,11 @@ export default {
   border: 1px solid steelblue;
   padding: 20px;
   border-radius: 10px;
+}
+
+.org-name {
+  margin-left: 30%;
+  margin-right: 45%;
+  color: black;
 }
 </style>
