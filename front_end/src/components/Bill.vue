@@ -22,6 +22,7 @@
         ]"
         @click="
           isUpdateClicked = !isUpdateClicked;
+          errors = [];
           isMakePaymentClicked = false;
           updateAmmount = bill.ammount;
         "
@@ -111,10 +112,6 @@
       <label> Bill Last Updated on : Not Updated.</label>
     </div>
 
-    <div v-show="isUpdateClicked">
-      <Button title="Update" color="purple" @click="updateBill" />
-    </div>
-
     <!-- Make Payment -->
     <div v-show="isMakePaymentClicked">
       <label> Paying Ammount : </label>
@@ -127,6 +124,19 @@
       />&#x20B9;
     </div>
 
+    <p v-if="errors.length">
+    <b>Please correct the following error(s):</b>
+        <ul class="pad-left">
+            <li  :key="error" v-for="error in errors">{{ error }}</li>
+        </ul>
+    </p>
+
+    <div v-show="isUpdateClicked">
+      <Button title="Update" color="purple" @click="updateBill" />
+    </div>
+
+    
+
     <p></p>
     <div v-show="this.bill.due_ammount != 0">
       <p>
@@ -137,6 +147,7 @@
       <button
         @click="
           isMakePaymentClicked = !isMakePaymentClicked;
+          errors = []
           paymentIsGreater = false;
           paymentAmmount = 0;
         "
@@ -171,6 +182,7 @@ export default {
       paymentAmmount: 0,
       paymentIsGreater: false,
       billUpdatedTime: this.bill.u_date,
+      errors: [],
     };
   },
   emits: ["delete-bill", "update-bill"],
@@ -185,6 +197,10 @@ export default {
           `Are you sure , you want to update the bill with id : ${this.bill.b_id}`
         )
       ) {
+        if (this.updateAmmount <= this.bill.ammount) {
+          this.errors.push("Bill amount cannot be decreased.");
+          return;
+        }
         const response = await fetch(
           `api/users/${this.getUserId()}/orgs/${this.getOrgId()}/bills/${
             this.bill.b_id
@@ -254,10 +270,12 @@ export default {
     },
 
     async makePaymentClicked() {
+      this.errors = [];
       // Close the update fields
       this.isUpdateClicked = false;
 
-      if (!this.isMakePaymentClicked || this.paymentAmmount == 0) {
+      // If Make Payment clicked for 1st time.Change status to show Input
+      if (!this.isMakePaymentClicked) {
         this.isMakePaymentClicked = true;
         return;
       }
@@ -275,6 +293,10 @@ export default {
         if (this.paymentAmmount > this.bill.due_ammount) {
           //   alert("Your payment is greater than due.");
           this.paymentIsGreater = true;
+          return;
+        }
+        if (this.paymentAmmount <= 0) {
+          this.errors.push("Payment amount is too low.");
           return;
         }
 
@@ -368,6 +390,10 @@ export default {
 
 .pos-static {
   position: static;
+}
+
+.pad-left {
+  padding-left: 2em;
 }
 
 .make-payment {
