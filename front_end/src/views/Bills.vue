@@ -5,7 +5,7 @@
       <!-- TODO: Move Dashboard to the right side  -->
     </router-link>
     <div class="containers">
-      <h1 class="org-name">{{ getOrgName() }}</h1>
+      <h1>{{ getOrgName() }}</h1>
       <ListBills :org_id="org_id"></ListBills>
     </div>
   </div>
@@ -32,9 +32,8 @@ export default {
 </script>
 
 <style scoped>
-.org-name {
-  margin-left: 30%;
-  margin-right: 45%;
+h1 {
+  text-align: center;
   color: black;
 }
 .containers {
