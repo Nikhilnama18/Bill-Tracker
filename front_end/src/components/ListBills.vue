@@ -5,7 +5,7 @@
       Add Bill
     </button>
     <!-- color="showAddBill === false ? 'green' : 'red'" -->
-    <div v-show="showAddBill">
+    <div v-show="showAddBill" class="add-bills">
         <input
           v-model="ammount"
           class="textField"
@@ -281,7 +281,7 @@ export default {
 
 <style  scoped>
 .textField {
-  width: 70%;
+  width: 80%;
   padding: 10px 10px;
   margin: 5px 0;
   display: inline-block;
@@ -292,15 +292,23 @@ export default {
 
 .add-bill {
   display: inline-block;
-  background: rgb(35, 139, 35);
   color: #fff;
+  background: green;
   border: none;
   padding: 8px 8px;
-  margin: 5px;
+  margin: 1px;
+  margin-left: 15%;
   border-radius: 10px;
   cursor: pointer;
   text-decoration: none;
   font-size: 15px;
   font-family: inherit;
+}
+
+.add-bills {
+  margin: 5px;
+  margin-left: 18%;
+  padding: 10px 20px;
+  position: static;
 }
 </style>
