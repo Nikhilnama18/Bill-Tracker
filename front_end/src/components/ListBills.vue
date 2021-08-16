@@ -12,17 +12,17 @@
           type="number"
           name="ammount"
           id="ammount"
-          placeholder="Bill Ammout"
+          placeholder="Bill Amout"
           required
         />
         <!-- TODO : Change Due to Paid Ammount  -->
         <input
-          v-model="dueAmmount"
+          v-model="paidAmount"
           class="textField"
           type="number"
-          name="dueAmmount"
-          id="dueAmmount"
-          placeholder="Bill Due Ammount"
+          name="paidAmount"
+          id="paidAmount"
+          placeholder="Bill Paid Amount"
           required
         />
 
@@ -76,7 +76,7 @@ export default {
       errors: [],
       bills: [],
       showAddBill: false,
-      dueAmmount: Number,
+      paidAmount: Number,
       ammount: Number,
       billTimestamp: moment(new Date()).format("YYYY-MM-DDTkk:mm"),
     };
@@ -111,11 +111,11 @@ export default {
         this.errors.push("Bill amount is too low.");
       }
       if (
-        !this.dueAmmount ||
-        parseInt(this.dueAmmount) < 0 ||
-        parseInt(this.dueAmmount) > parseInt(this.ammount)
+        !this.paidAmount ||
+        parseInt(this.paidAmount) < 0 ||
+        parseInt(this.paidAmount) > parseInt(this.ammount)
       ) {
-        this.errors.push("Invalid due amount identified.");
+        this.errors.push("Invalid Paid Amount identified.");
       }
 
       if (this.errors.length > 0) return;
@@ -131,7 +131,7 @@ export default {
             u_id: parseInt(this.getUserId()),
             o_id: parseInt(this.getOrgId()),
             ammount: parseInt(this.ammount),
-            due_ammount: parseInt(this.dueAmmount),
+            due_ammount: parseInt(this.ammount) - parseInt(this.paidAmount),
             issue_timestamp: this.billTimestamp,
           }),
         }
