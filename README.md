@@ -52,8 +52,8 @@ Open the Bill Tracker application running at ```http://localhost:8080```
 You'll be looking at a page like this 
 
 <p align="center">
-  <a href="https://github.com/Nikhilnama18/Tiny-URL">
-    <img alt="Tiny-URL" src="./readme/URL.png" width="100%" />
+  <a href="https://github.com/Nikhilnama18/Bill-Tracker">
+    <img alt="Bill-Tracker" src="./Readme/home.png" width="100%" />
   </a>
 </p>
 
@@ -62,8 +62,8 @@ Go and Create an account by clicking on ```singup```
 Once You click singup you be viewing a page 
 
 <p align="center">
-  <a href="https://github.com/Nikhilnama18/Tiny-URL">
-    <img alt="Tiny-URL" src="./readme/URL.png" width="100%" />
+  <a href="https://github.com/Nikhilnama18/Bill-Tracker">
+    <img alt="Bill-Tracker" src="./Readme/singup.png" width="100%" />
   </a>
 </p>
 
@@ -73,8 +73,8 @@ Your are now in the Organisation Page, where multiple business-organisations bil
 organisation by clicking on ```Add Organisation```.
 
 <p align="center">
-  <a href="https://github.com/Nikhilnama18/Tiny-URL">
-    <img alt="Tiny-URL" src="./readme/URL.png" width="100%" />
+  <a href="https://github.com/Nikhilnama18/Bill-Tracker">
+    <img alt="Bill-Tracker" src="./Readme/dashboard.png" width="100%" />
   </a>
 </p>
 
