@@ -12,10 +12,10 @@ Bill Tracker is an web application that helps to manage the books of accounts in
 
 It tracks bills of various organization's from whom a organisation is purchsing goods.
 
-It  hepls in tracking due and completed payments with a  an organised way.
+It  hepls in tracking due and completed payments in an organised way.
 
 ## Get Up and Running in 5 Minutes
-You can get the Tiny URL up and running in your local machine with in 5 minutes by doing the following steps.
+You can get the Bill Tracker up and running in your local machine with in 5 minutes by doing the following steps.
 
 The following steps consider Node.js is available in the machine. If not you can get it from [here](https://nodejs.org/en/).
 
@@ -24,7 +24,7 @@ The following steps consider Node.js is available in the machine. If not you can
 Open the terminal and paste the following command to clone.
 
 ```shell
-Write clont link here
+git clone https://github.com/Nikhilnama18/Bill-Tracker
 ```
 
 **Install Vue.js and dependencies**
@@ -59,7 +59,7 @@ You'll be looking at a page like this
 
 Go and Create an account by clicking on ```singup``` 
 
-Once You click singup you be viewing a page 
+Once You click singup you'll be viewing a page 
 
 <p align="center">
   <a href="https://github.com/Nikhilnama18/Bill-Tracker">
@@ -81,10 +81,10 @@ organisation by clicking on ```Add Organisation```.
 Clicking on an Organisation will show the bills of that particular organisation.
 
 <p align="center">
-  <a href="https://github.com/Nikhilnama18/Tiny-URL">
-    <img alt="Tiny-URL" src="./readme/URL.png" width="100%" />
+  <a href="https://github.com/Nikhilnama18/Bill-Tracker">
+    <img alt="Tiny-URL" src="./Readme/bills.png" width="100%" />
   </a>
 </p>
 
-You can ```Add Bills``` , edit and delete the that are existing .
+You can ```Add Bills``` , edit and delete bills the that are existing .
 
