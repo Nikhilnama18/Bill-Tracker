@@ -61,9 +61,9 @@
 
     <h3 v-show="bill.due_ammount == 0">Bill Closed</h3>
     <p></p>
-    <label> Bill ID : </label>
+    <!-- <label> Bill ID : </label>
     {{ bill.b_id }}
-    <p></p>
+    <p></p> -->
 
     <div v-show="isUpdateClicked">
       <label> Ammount : </label>
