@@ -14,7 +14,7 @@
                 "src/types/*"
             ]
         },
-        "watch": true
+        "watch": false
     },
     "include": [
         "src/**/*"

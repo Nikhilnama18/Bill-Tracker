@@ -3,7 +3,12 @@
   "version": "1.0.0",
   "description": "Handles the back end of the project ",
   "main": "build/app.js",
+  "engines": {
+    "node": "14.x"
+  },
   "scripts": {
+    "postinstall": "tsc",
+    "start": "node build/app.js",
     "build": "tsc",
     "serve": "node -r dotenv/config build/app.js",
     "watch": "tsc -w",
