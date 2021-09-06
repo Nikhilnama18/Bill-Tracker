@@ -19,9 +19,18 @@ app.use('/', (req: Request, res: Response, next: NextFunction) => {
 
 app.use('/v1', routerIndex);
 
+app.use('/ping', (req, res, next)=>{
+    res.send({
+        'ip':req.ip,
+        'method':req.body,
+        'body':req.body,
+        'time':new Date()
+    })
+})
+
 try {
-    app.listen(PORT, "127.0.0.1", () => {
-        console.log(`Server runing at https://127.0.0.1:${PORT} in ${environment}`);
+    app.listen(PORT, "0.0.0.0", () => {
+        console.log(`Server runing at https://0.0.0.0:${PORT} in ${environment}`);
     })
 }
 catch (e) {
