@@ -6,15 +6,26 @@ import {
     updateOrganisation_Q
 } from '../../queries/QOrganizations';
 import { ICreateOrganization, IOrganization, IUpdateOrganization } from '../../contracts/IOrganization';
-import { db } from '../../config';
+import { DATABASE_URL, db } from '../../config';
 
-const client = new Client({
-    user: db.user,
-    host: db.host,
-    database: db.database,
-    password: db.password,
-    port: db.port,
-});
+let client: Client;
+if (DATABASE_URL) {
+    client = new Client({
+        connectionString: DATABASE_URL,
+        ssl: {
+            rejectUnauthorized: false
+        }
+    });
+}
+else {
+    client = new Client({
+        user: db.user,
+        host: db.host,
+        database: db.database,
+        password: db.password,
+        port: db.port,
+    });
+}
 client.connect();
 
 class organizationRepositry {

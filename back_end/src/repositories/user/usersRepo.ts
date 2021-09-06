@@ -1,14 +1,26 @@
 import { Client } from 'pg';
-import { db } from '../../config';
 import { createuser_Q, upadatePassword_Q, findUser_Q, deleteuser_Q, getuserDeatils_Q, findperson_Q, getUserById_Q, getuserPassword_Q } from '../../queries/QUsers';
 import { ICreateUser, IUser } from '../../contracts/IUser';
-const client = new Client({
-    user: db.user,
-    host: db.host,
-    database: db.database,
-    password: db.password,
-    port: db.port
-});
+import { DATABASE_URL, db } from '../../config';
+
+let client: Client;
+if (DATABASE_URL) {
+    client = new Client({
+        connectionString: DATABASE_URL,
+        ssl: {
+            rejectUnauthorized: false
+        }
+    });
+}
+else {
+    client = new Client({
+        user: db.user,
+        host: db.host,
+        database: db.database,
+        password: db.password,
+        port: db.port,
+    });
+}
 client.connect();
 
 class userRepositry {

@@ -1,13 +1,26 @@
 import { Client } from 'pg';
 import { IBill, ICreateBill, IUpdateBill } from '../../contracts/IBills';
 import { getBills_Q, findBill_Q, createBill_Q, updateBill_Q, deleteBill_Q, updateBillAmmount_Q, updateBillDueAmmount_Q } from '../../queries/QBills';
-const client = new Client({
-    user: 'nick',
-    host: 'localhost',
-    database: 'billingApp',
-    password: 'nick_18',
-    port: 5432,
-})
+import { DATABASE_URL, db } from '../../config';
+
+let client: Client;
+if (DATABASE_URL) {
+    client = new Client({
+        connectionString: DATABASE_URL,
+        ssl: {
+            rejectUnauthorized: false
+        }
+    });
+}
+else {
+    client = new Client({
+        user: db.user,
+        host: db.host,
+        database: db.database,
+        password: db.password,
+        port: db.port,
+    });
+}
 client.connect();
 
 class billsRepository {
